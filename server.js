@@ -43,16 +43,11 @@ io.on('connection', (socket) => {
     socket.on('createRoom', (data) => {
         const roomId = "Oda_" + Math.floor(Math.random() * 10000);
         rooms[roomId] = {
-            id: roomId,
-            name: data.name,
-            maxPlayers: data.maxPlayers,
-            isLocked: data.isLocked,
-            password: data.password,
+            id: roomId, name: data.name, maxPlayers: data.maxPlayers,
+            isLocked: data.isLocked, password: data.password,
             hostId: socket.id,
             players: [{ id: socket.id, name: data.hostName, avatarColor: avatarColors[0], hand: [] }],
-            deck: [],
-            discardPile: [],
-            isStarted: false
+            deck: [], discardPile: [], isStarted: false
         };
         socket.join(roomId);
         socket.emit('roomJoined', { room: rooms[roomId], isHost: true });
@@ -80,13 +75,11 @@ io.on('connection', (socket) => {
         if (room && room.hostId === socket.id) {
             room.isStarted = true;
             room.deck = createUnoDeck();
-            
             room.players.forEach(p => { p.hand = room.deck.splice(0, 7); });
 
             let topCard = room.deck.pop();
             while(topCard.color === 'wild') {
-                room.deck.unshift(topCard);
-                topCard = room.deck.pop();
+                room.deck.unshift(topCard); topCard = room.deck.pop();
             }
             topCard.angle = Math.floor(Math.random() * 30) - 15;
             room.discardPile = [topCard];
@@ -96,20 +89,45 @@ io.on('connection', (socket) => {
         }
     });
 
-    // OYUN İÇİ KART ATMA HAMLESİNİ DİĞER TELEFONA İLET
+    // RAKİBE KART ATILDIĞINI BİLDİR
     socket.on('playCardMultiplayer', (data) => {
+        const room = rooms[data.roomId];
+        if (room) room.discardPile.push(data.card);
         socket.to(data.roomId).emit('cardPlayed', { card: data.card, remaining: data.remaining });
     });
 
+    // CANLI KART ÇEKME SİSTEMİ (CEZALI ÇEKİMLER DAHİL)
+    socket.on('drawCards', (data) => {
+        const room = rooms[data.roomId];
+        if (room && room.isStarted) {
+            let drawn = [];
+            for (let i = 0; i < data.amount; i++) {
+                if (room.deck.length === 0 && room.discardPile.length > 1) {
+                    const top = room.discardPile.pop();
+                    room.deck = shuffleDeck(room.discardPile);
+                    room.discardPile = [top];
+                }
+                if (room.deck.length > 0) drawn.push(room.deck.pop());
+            }
+            socket.emit('cardsDrawn', drawn);
+            socket.to(data.roomId).emit('opponentDrawn', drawn.length);
+        }
+    });
+
+    // ODADAN AYRILINCA VEYA KOPUNCA BİLDİRİM VERME
     socket.on('leaveRoom', (roomId) => {
         const room = rooms[roomId];
         if (room) {
-            if (room.hostId === socket.id) {
-                io.to(roomId).emit('roomClosed');
+            if (room.isStarted) {
+                io.to(roomId).emit('opponentLeft', 'Rakibiniz oyunu terk etti!');
                 delete rooms[roomId];
             } else {
-                room.players = room.players.filter(p => p.id !== socket.id);
-                io.to(roomId).emit('updateWaitingRoom', room);
+                if (room.hostId === socket.id) {
+                    io.to(roomId).emit('roomClosed'); delete rooms[roomId];
+                } else {
+                    room.players = room.players.filter(p => p.id !== socket.id);
+                    io.to(roomId).emit('updateWaitingRoom', room);
+                }
             }
             socket.leave(roomId);
             io.emit('updateRoomList', rooms);
@@ -120,8 +138,8 @@ io.on('connection', (socket) => {
         const room = rooms[data.roomId];
         if (room && room.hostId === socket.id) {
             room.players = room.players.filter(p => p.id !== data.playerId);
-            const targetSocket = io.sockets.sockets.get(data.playerId);
-            if(targetSocket) targetSocket.leave(data.roomId);
+            const target = io.sockets.sockets.get(data.playerId);
+            if(target) target.leave(data.roomId);
             io.to(data.playerId).emit('kicked');
             io.to(data.roomId).emit('updateWaitingRoom', room);
             io.emit('updateRoomList', rooms);
@@ -133,12 +151,16 @@ io.on('connection', (socket) => {
             const room = rooms[roomId];
             const pIdx = room.players.findIndex(p => p.id === socket.id);
             if (pIdx !== -1) {
-                if (room.hostId === socket.id) {
-                    io.to(roomId).emit('roomClosed');
+                if (room.isStarted) {
+                    io.to(roomId).emit('opponentLeft', 'Rakibiniz bağlantıyı kopardı veya oyunu terk etti!');
                     delete rooms[roomId];
                 } else {
-                    room.players.splice(pIdx, 1);
-                    io.to(roomId).emit('updateWaitingRoom', room);
+                    if (room.hostId === socket.id) {
+                        io.to(roomId).emit('roomClosed'); delete rooms[roomId];
+                    } else {
+                        room.players.splice(pIdx, 1);
+                        io.to(roomId).emit('updateWaitingRoom', room);
+                    }
                 }
                 io.emit('updateRoomList', rooms);
             }
