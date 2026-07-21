@@ -16,14 +16,14 @@
         
         .bg-blur { background: rgba(0, 0, 0, 0.2) !important; backdrop-filter: blur(8px); }
 
-        /* YENİ: HIZLI AÇILMA / BÜYÜME ANİMASYONU */
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.6); }
-            100% { opacity: 1; transform: scale(1); }
+        /* YENİ: YUMUŞAK VE HIZLI FADE-IN ANİMASYONU (0'dan 100'e Opaklık) */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
-        .active-screen > * { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .active-screen > * { animation: fadeIn 0.15s ease-out forwards; }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; }
-        .modal-overlay.active-modal .support-box { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .modal-overlay.active-modal .support-box { animation: fadeIn 0.15s ease-out forwards; }
 
         h1.title { font-size: 80px; text-shadow: 4px 4px 0px rgba(0,0,0,0.9); margin-bottom: 20px; color: #fff; letter-spacing: 5px; text-align: center; }
 
@@ -69,15 +69,12 @@
         .opponent-area { text-align: center; position: relative; padding: 10px; border-radius: 15px; transition: 0.3s; margin-top: 20px; }
         .my-player-wrapper { text-align: center; position: relative; padding: 10px; border-radius: 15px; transition: 0.3s; }
         
-        /* OYUNCU KART ALANI - YELPAZE VE KAYDIRMA İÇİN */
         .player-area { display: flex; overflow-x: visible; padding: 30px 10px 10px 10px; justify-content: center; align-items: flex-end; }
         .center-area { display: flex; justify-content: center; align-items: center; gap: 40px; flex: 1; position: relative; }
         .active-turn { box-shadow: 0 0 30px rgba(220, 20, 60, 0.8); background: rgba(220, 20, 60, 0.15); }
 
-        /* KART GÖRÜNÜMÜ - GÖLGELİ VE SIKIŞIK (YELPAZE EFEKTİ) */
         .card { width: 110px; height: 165px; background: white; border-radius: 12px; position: relative; box-shadow: -5px 5px 15px rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), margin 0.2s, filter 0.2s; margin-left: -50px; border: 3px solid white; flex-shrink: 0; filter: brightness(0.85); }
         .card:first-child { margin-left: 0; }
-        /* KARTA ODAKLANMA (HOVER) EFEKTİ */
         .card:hover { transform: translateY(-30px) scale(1.15) !important; filter: brightness(1.1); margin-right: 30px; z-index: 50 !important; box-shadow: 0 10px 25px rgba(0,0,0,0.9); }
         
         .card-inner { width: 92%; height: 92%; border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; }
@@ -94,13 +91,10 @@
         
         .card-back { background: #111; border: 4px solid white; color: #e74c3c; font-size: 30px; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 12px; width: 110px; height: 165px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic; flex-shrink: 0; filter: brightness(1) !important; margin-left: 0 !important; }
         
-        /* BİLDİRİMLER (SAĞ ÜST KÖŞEYE ALINDI) */
+        /* BİLDİRİMLER (SAĞ ÜST KÖŞE) */
         .status-text { position: absolute; top: 20px; right: 20px; left: auto; transform: none; background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 20px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10; white-space: nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         #active-color-box { position: absolute; top: 75px; right: 20px; left: auto; transform: none; padding: 8px 25px; border-radius: 15px; font-size: 16px; font-weight: bold; border: 2px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.8); transition: 0.3s; z-index: 10; display: none; }
 
-        /* =========================================
-           MOBİL CİHAZLAR İÇİN DÜZELTİLMİŞ TASARIM 
-           ========================================= */
         @media screen and (max-width: 768px) {
             h1.title { font-size: 38px !important; margin-bottom: 15px; }
             .menu-btn { width: 85vw !important; padding: 12px 20px !important; font-size: 18px !important; }
@@ -109,24 +103,20 @@
             .panel-box { width: 90vw !important; padding: 20px !important; }
             .support-box { width: 90vw !important; padding: 25px !important; }
             
-            /* Buton Boyutları */
             .circle-back-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; left: 10px !important; top: 10px !important; }
             .support-btn, .music-btn { width: 45px !important; height: 45px !important; font-size: 22px !important; bottom: 15px !important; }
             .support-btn { left: 15px !important; } .music-btn { right: 15px !important; }
             .uno-btn { width: 70px !important; height: 70px !important; font-size: 16px !important; right: 10px !important; bottom: 80px !important; border-width: 3px !important; }
             
-            /* Oyun İçi Bildirimler (Sağ Üst) */
             .status-text { font-size: 14px !important; padding: 5px 10px !important; top: 10px !important; right: 10px !important; }
             #active-color-box { font-size: 12px !important; padding: 5px 10px !important; top: 45px !important; right: 10px !important; }
             #ingame-setting-btn { top: 60px !important; }
 
-            /* Oyuncu Bilgileri */
             #my-player-name, #opponent-name { font-size: 16px !important; }
             .user-avatar { width: 30px !important; height: 30px !important; margin-right: 5px !important; }
             .user-avatar svg { width: 20px !important; height: 20px !important; }
             
-            /* MOBİL KART GÖRÜNÜMÜ - SIKIŞIK YELPAZE */
-            .player-area { padding-top: 40px !important; } /* Hover yapıldığında kart üstten kesilmesin */
+            .player-area { padding-top: 40px !important; } 
             .card { width: 65px !important; height: 100px !important; margin-left: -35px !important; border-width: 2px !important; }
             .card:first-child { margin-left: 0 !important; }
             .card:hover { transform: translateY(-20px) scale(1.15) !important; margin-left: -15px !important; margin-right: 20px !important; }
@@ -288,7 +278,6 @@
 
     <!-- OYUN EKRANI -->
     <div id="game-screen" class="screen">
-        <!-- Bildirimler Artık Sağ Üstte -->
         <div class="status-text" id="game-status">Oyun Başlıyor...</div>
         <div id="active-color-box">Renk: Bekleniyor</div>
         
@@ -503,7 +492,6 @@
             for (let i = 0; i < 4; i++) { deck.push({ color: 'wild', value: 'W' }); deck.push({ color: 'wild', value: '+4' }); } return shuffle(deck);
         }
 
-        // YENİ: 3 Katmanlı (Triple-Pass) Gelişmiş Karıştırma Sistemi
         function shuffle(arr) { 
             for(let k=0; k<3; k++) {
                 for (let i = arr.length - 1; i > 0; i--) { 
@@ -520,7 +508,7 @@
             document.getElementById('my-avatar-border').style.borderColor = '#ff4d4d'; document.getElementById('opponent-avatar-border').style.borderColor = '#4d79ff'; document.getElementById('opponent-name').innerText = "Robot (" + (level === 'zor' ? 'Zor' : (level === 'orta' ? 'Orta' : 'Kolay')) + ")";
             drawDeck = generate108UnoDeck(); playerHand = drawDeck.splice(0, 7); botHand = drawDeck.splice(0, 7);
             let topCard = drawDeck.pop(); while(topCard.color === 'wild') { drawDeck.unshift(topCard); topCard = drawDeck.pop(); }
-            topCard.angle = Math.floor(Math.random() * 26) - 13; discardPile = [topCard];
+            topCard.angle = Math.floor(Math.random() * 10) - 5; discardPile = [topCard];
             showScreen('game-screen'); setTurn(true); updateBoard();
         }
 
@@ -546,12 +534,15 @@
 
         function updateBoard() {
             const discardUI = document.getElementById('discard-pile'); discardUI.innerHTML = "";
-            discardPile.forEach(c => { discardUI.innerHTML += createCardHTML(c, true); });
+            
+            // Sadece en üstteki 3 kartı çizerek alttakileri tamamen gizler ve taşmayı önler
+            const cardsToRender = discardPile.slice(-3);
+            cardsToRender.forEach(c => { discardUI.innerHTML += createCardHTML(c, true); });
+            
             const lastCard = discardUI.lastElementChild; if (lastCard && window.innerWidth <= 768) { lastCard.style.position = "relative"; }
             
             updateActiveColorUI();
 
-            // YENİ UNO GÖSTERİM KURALI: Elde 1 kart varsa (2. kart atıldıktan sonra) gösterilir
             const unoBtn = document.getElementById('uno-btn');
             if(playerHand.length === 1 && !hasSaidUno) { unoBtn.style.display = 'block'; } 
             else { unoBtn.style.display = 'none'; }
@@ -586,10 +577,9 @@
             }
 
             if (canPlay(card)) {
-                // UNO CEZASI: Eğer son kartı atıyorsa ve butona basmamışsa!
                 if (playerHand.length === 1 && !hasSaidUno) {
                     customAlert("UNO demeyi unuttun! Kartı attın ama kazanmak yerine +4 ceza yedin!", "UNO Cezası!");
-                    executePlayCard(index, null, true); // Ceza bayrağı ile oyna
+                    executePlayCard(index, null, true); 
                     return;
                 }
 
@@ -609,12 +599,11 @@
 
         function executePlayCard(index, chosenColor, isPenalty = false) {
             const card = playerHand[index];
-            card.angle = Math.floor(Math.random() * 30) - 15;
+            card.angle = Math.floor(Math.random() * 10) - 5;
             if(chosenColor) card.chosenColor = chosenColor; 
             
             discardPile.push(card); playerHand.splice(index, 1);
             
-            // Ceza Aldıysa (UNO demeyi unuttuysa)
             if (isPenalty) {
                 for(let i=0; i<4; i++) { checkAndReshuffleDeck(); playerHand.push(drawDeck.pop()); }
                 hasSaidUno = false;
@@ -625,7 +614,6 @@
             
             updateBoard();
             
-            // Eğer ceza almadıysa ve eli bittiyse kazandı!
             if (!isPenalty && playerHand.length === 0) { customAlert("KAZANDIN! 🎉", "Tebrikler"); showScreen('main-menu'); return; }
 
             if (isMultiplayer) {
@@ -673,7 +661,7 @@
                 } else { cardToPlay = validCards[Math.floor(Math.random() * validCards.length)]; }
 
                 const index = botHand.indexOf(cardToPlay);
-                cardToPlay.angle = Math.floor(Math.random() * 30) - 15; 
+                cardToPlay.angle = Math.floor(Math.random() * 10) - 5; 
                 
                 if(cardToPlay.color === 'wild') {
                     const colors = ['red', 'blue', 'green', 'yellow'];
