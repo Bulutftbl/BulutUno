@@ -5,138 +5,50 @@
     <title>Bulut UNO Online</title>
     <style>
         :root { --color-temp: 0; }
-
-        * {
-            margin: 0; padding: 0; box-sizing: border-box; user-select: none;
-            cursor: url("png-clipart-hand-cursor-illustration-computer-mouse-pointer-cursor-icon-computer-mouse-arrow-hand-rectangle-thumbnail.png") 12 5, auto !important;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; color: white;
-            background: url('de9fac23ab831da3e0746c6fbe2b367e.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        #screen-filter {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; background: rgba(255, 150, 0, var(--color-temp));
-            mix-blend-mode: overlay; z-index: 9999;
-        }
-
-        .screen {
-            display: none; width: 100vw; height: 100vh;
-            flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.5);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; cursor: url("png-clipart-hand-cursor-illustration-computer-mouse-pointer-cursor-icon-computer-mouse-arrow-hand-rectangle-thumbnail.png") 12 5, auto !important; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; color: white; background: url('de9fac23ab831da3e0746c6fbe2b367e.jpg') no-repeat center center fixed; background-size: cover; }
+        #screen-filter { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; background: rgba(255, 150, 0, var(--color-temp)); mix-blend-mode: overlay; z-index: 9999; }
+        .screen { display: none; width: 100vw; height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.5); }
         .active-screen { display: flex; }
+        h1.title { font-size: 80px; text-shadow: 4px 4px 0px rgba(0,0,0,0.9); margin-bottom: 20px; color: #fff; letter-spacing: 5px; }
 
-        h1.title {
-            font-size: 80px; text-shadow: 4px 4px 0px rgba(0,0,0,0.9);
-            margin-bottom: 20px; color: #fff; letter-spacing: 5px;
-        }
+        .menu-btn { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(5px); border: 2px solid rgba(139, 0, 0, 0.8); color: white; padding: 15px 40px; font-size: 24px; font-weight: bold; border-radius: 30px; margin: 10px; width: 300px; transition: all 0.2s ease; box-shadow: 0 8px 15px rgba(0,0,0,0.6); }
+        .menu-btn:hover { background: rgba(60, 10, 10, 0.9); border: 2px solid rgba(220, 20, 60, 1); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(139, 0, 0, 0.7); }
 
-        .menu-btn {
-            background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(5px);
-            border: 2px solid rgba(139, 0, 0, 0.8); color: white;
-            padding: 15px 40px; font-size: 24px; font-weight: bold;
-            border-radius: 30px; margin: 10px; width: 300px;
-            transition: all 0.2s ease; box-shadow: 0 8px 15px rgba(0,0,0,0.6);
-        }
-        .menu-btn:hover {
-            background: rgba(60, 10, 10, 0.9); border: 2px solid rgba(220, 20, 60, 1);
-            transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(139, 0, 0, 0.7);
-        }
-
-        .circle-back-btn {
-            position: absolute; top: 30px; left: 30px;
-            width: 60px; height: 60px; border-radius: 50%;
-            background: rgba(20, 20, 20, 0.8); border: 3px solid rgba(139, 0, 0, 0.8);
-            color: white; font-size: 30px; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 50;
-        }
+        .circle-back-btn { position: absolute; top: 30px; left: 30px; width: 60px; height: 60px; border-radius: 50%; background: rgba(20, 20, 20, 0.8); border: 3px solid rgba(139, 0, 0, 0.8); color: white; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 50; }
         .circle-back-btn:hover { background: rgba(139, 0, 0, 0.9); transform: scale(1.1); }
 
-        .large-panel {
-            background: rgba(15, 15, 15, 0.85); border: 4px solid rgba(139, 0, 0, 0.9);
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.5); width: 80vw; height: 80vh;
-            border-radius: 20px; padding: 30px; display: flex; flex-direction: column; backdrop-filter: blur(10px);
-        }
-        
-        .room-list-container {
-            flex: 1; background: #000; border: 2px solid rgba(139, 0, 0, 0.6);
-            border-radius: 10px; margin-top: 20px; overflow-y: auto; padding: 15px;
-        }
-        .room-item {
-            background: rgba(30, 30, 30, 0.8); border: 1px solid rgba(139,0,0,0.5);
-            padding: 15px; border-radius: 8px; margin-bottom: 10px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .large-panel { background: rgba(15, 15, 15, 0.85); border: 4px solid rgba(139, 0, 0, 0.9); box-shadow: 0 0 30px rgba(139, 0, 0, 0.5); width: 80vw; height: 80vh; border-radius: 20px; padding: 30px; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
+        .room-list-container { flex: 1; background: #000; border: 2px solid rgba(139, 0, 0, 0.6); border-radius: 10px; margin-top: 20px; overflow-y: auto; padding: 15px; }
+        .room-item { background: rgba(30, 30, 30, 0.8); border: 1px solid rgba(139,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
-        /* --- RENKLİ KULLANICI AVATARI --- */
-        .user-avatar {
-            width: 50px; height: 50px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center;
-            background: #222; border: 3px solid #ff4d4d; margin-right: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
+        .user-avatar { width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #222; border: 3px solid #ff4d4d; margin-right: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .user-avatar svg { width: 30px; height: 30px; fill: white; }
 
-        .waiting-player-item {
-            background: rgba(40,40,40,0.8); padding: 10px 20px; border-radius: 10px;
-            margin-bottom: 10px; font-size: 22px; font-weight: bold; border: 1px solid #555;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .kick-btn {
-            display: none; color: #ff5555; font-size: 24px; font-weight: bold; 
-            background: none; border: none; padding: 0 10px; transition: 0.2s;
-        }
+        .waiting-player-item { background: rgba(40,40,40,0.8); padding: 10px 20px; border-radius: 10px; margin-bottom: 10px; font-size: 22px; font-weight: bold; border: 1px solid #555; display: flex; justify-content: space-between; align-items: center; }
+        .kick-btn { display: none; color: #ff5555; font-size: 24px; font-weight: bold; background: none; border: none; padding: 0 10px; transition: 0.2s; }
         .kick-btn:hover { transform: scale(1.3); color: #ff0000; }
         .waiting-player-item:hover .kick-btn { display: block; }
 
         .lock-group { display: flex; gap: 10px; justify-content: center; margin: 15px 0 10px 0; }
-        .lock-btn {
-            background: rgba(40,40,40,0.8); border: 2px solid #555; font-size: 24px; padding: 10px 20px; border-radius: 10px; transition: 0.3s;
-        }
+        .lock-btn { background: rgba(40,40,40,0.8); border: 2px solid #555; font-size: 24px; padding: 10px 20px; border-radius: 10px; transition: 0.3s; }
         .lock-btn.active { background: rgba(139, 0, 0, 0.8); border-color: rgba(220, 20, 60, 1); }
 
-        .support-btn, .music-btn {
-            position: fixed; bottom: 30px; width: 60px; height: 60px;
-            background: rgba(20, 20, 20, 0.8); border: 2px solid rgba(139, 0, 0, 0.6);
-            border-radius: 15px; display: flex; align-items: center; justify-content: center;
-            font-size: 30px; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 100;
-        }
+        .support-btn, .music-btn { position: fixed; bottom: 30px; width: 60px; height: 60px; background: rgba(20, 20, 20, 0.8); border: 2px solid rgba(139, 0, 0, 0.6); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 100; }
         .support-btn { left: 30px; } .music-btn { right: 30px; }
         .support-btn:hover, .music-btn:hover { transform: scale(1.1) rotate(10deg); border-color: rgba(220, 20, 60, 0.9); }
 
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
-        }
-        .support-box {
-            background: rgba(20, 20, 20, 0.9); padding: 40px; border-radius: 20px;
-            text-align: center; border: 3px solid rgba(139, 0, 0, 0.8); backdrop-filter: blur(10px);
-        }
-        .panel-box {
-            background: rgba(10, 10, 10, 0.8); padding: 40px; border-radius: 20px;
-            width: 450px; text-align: center; border: 2px solid rgba(139, 0, 0, 0.5); backdrop-filter: blur(8px);
-        }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; }
+        .support-box { background: rgba(20, 20, 20, 0.95); padding: 40px; border-radius: 20px; text-align: center; border: 3px solid rgba(139, 0, 0, 0.8); backdrop-filter: blur(10px); }
+        .panel-box { background: rgba(10, 10, 10, 0.8); padding: 40px; border-radius: 20px; width: 450px; text-align: center; border: 2px solid rgba(139, 0, 0, 0.5); backdrop-filter: blur(8px); }
         .setting-group { margin-bottom: 25px; text-align: left; }
         .setting-group label { display: block; margin-bottom: 10px; font-size: 18px; color: #ddd;}
         
-        .global-input, .setting-group input[type="text"], .setting-group input[type="number"], .setting-group input[type="range"], #room-password, #join-password { 
-            width: 100%; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(139,0,0,0.5); 
-            padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 5px; text-align: center;
-        }
-        
-        #global-player-name {
-            width: 300px; margin-bottom: 20px; font-size: 20px; padding: 15px; border: 2px solid rgba(220, 20, 60, 0.8);
-        }
+        .global-input, .setting-group input[type="text"], .setting-group input[type="number"], .setting-group input[type="range"], #room-password, #join-password { width: 100%; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(139,0,0,0.5); padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 5px; text-align: center; }
+        #global-player-name { width: 300px; margin-bottom: 20px; font-size: 20px; padding: 15px; border: 2px solid rgba(220, 20, 60, 0.8); }
         #room-password { display: none; margin-bottom: 20px; }
         #room-password::placeholder, #join-password::placeholder { color: #888; } 
 
-        /* OYUN İÇİ VE GERÇEKÇİ UNO KARTLARI */
         .game-board { display: flex; flex-direction: column; justify-content: space-between; height: 100vh; width: 100vw; padding: 20px; }
         .opponent-area { text-align: center; position: relative; padding: 10px; border-radius: 15px; transition: 0.3s; }
         .my-player-wrapper { text-align: center; position: relative; padding: 10px; border-radius: 15px; transition: 0.3s; }
@@ -144,38 +56,20 @@
         .center-area { display: flex; justify-content: center; align-items: center; gap: 40px; flex: 1; position: relative; }
         .active-turn { box-shadow: 0 0 30px rgba(220, 20, 60, 0.8); background: rgba(220, 20, 60, 0.15); }
 
-        .card {
-            width: 120px; height: 180px; background: white; border-radius: 12px;
-            position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s, margin 0.2s; margin-left: -25px; border: 3px solid white;
-        }
+        .card { width: 120px; height: 180px; background: white; border-radius: 12px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; transition: transform 0.2s, margin 0.2s; margin-left: -25px; border: 3px solid white; }
         .card:hover { transform: translateY(-20px) scale(1.05) !important; z-index: 50; margin-left: 5px; margin-right: 5px; }
-        
         .card-inner { width: 92%; height: 92%; border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; }
         .card-oval { width: 85%; height: 55%; background: white; border-radius: 50% / 100% 100% 50% 50%; transform: skewY(-18deg); position: absolute; box-shadow: inset 0 0 5px rgba(0,0,0,0.2); }
         .card-value-center { font-size: 55px; font-weight: 900; position: relative; z-index: 2; text-shadow: 3px 3px 0px rgba(0,0,0,0.4); font-style: italic; }
         .card-value-small { position: absolute; font-size: 20px; font-weight: bold; color: white; font-style: italic; text-shadow: 1px 1px 2px black; }
         .top-left { top: 4px; left: 8px; } .bottom-right { bottom: 4px; right: 8px; transform: rotate(180deg); }
-
         .red .card-inner { background: #e74c3c; } .red .card-value-center { color: #e74c3c; }
         .blue .card-inner { background: #2980b9; } .blue .card-value-center { color: #2980b9; }
         .green .card-inner { background: #27ae60; } .green .card-value-center { color: #27ae60; }
         .yellow .card-inner { background: #f39c12; } .yellow .card-value-center { color: #f39c12; }
-        
-        .wild .card-inner { background: #111; } 
-        .wild .card-oval { background: conic-gradient(#e74c3c 90deg, #2980b9 90deg 180deg, #27ae60 180deg 270deg, #f39c12 270deg); }
-        .wild .card-value-center { color: white; text-shadow: 2px 2px 4px black; }
-
-        .card-back {
-            background: #111; border: 4px solid white; color: #e74c3c; font-size: 32px; font-weight: 900;
-            display: flex; align-items: center; justify-content: center; border-radius: 12px;
-            width: 120px; height: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic;
-        }
-        
-        .status-text {
-            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 22px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10;
-        }
+        .wild .card-inner { background: #111; } .wild .card-oval { background: conic-gradient(#e74c3c 90deg, #2980b9 90deg 180deg, #27ae60 180deg 270deg, #f39c12 270deg); } .wild .card-value-center { color: white; text-shadow: 2px 2px 4px black; }
+        .card-back { background: #111; border: 4px solid white; color: #e74c3c; font-size: 32px; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 12px; width: 120px; height: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic; }
+        .status-text { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 22px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10; }
     </style>
 </head>
 <body>
@@ -186,6 +80,27 @@
     <div id="screen-filter"></div>
     <div class="music-btn" id="music-toggle" onclick="toggleMusic(); playClick()">🔇</div>
     <div class="support-btn" onclick="openSupport(); playClick()">🎧</div>
+
+    <!-- OYUN İÇİ ŞIK UYARI (ALERT) SİSTEMİ -->
+    <div class="modal-overlay" id="custom-alert-modal" style="z-index: 20000;">
+        <div class="support-box" style="border-color: #ff5555; width: 450px;">
+            <h2 id="custom-alert-title" style="color: #ff5555; font-size: 32px; margin-bottom: 15px;">Uyarı</h2>
+            <p id="custom-alert-text" style="font-size: 20px; color: white; margin-bottom: 30px;">Mesaj</p>
+            <button class="menu-btn" style="width: auto; padding: 10px 40px; margin: 0; background: rgba(139,0,0,0.8);" onclick="closeCustomAlert()">Tamam</button>
+        </div>
+    </div>
+
+    <!-- OYUN İÇİ ONAY (CONFIRM) SİSTEMİ -->
+    <div class="modal-overlay" id="confirm-modal" style="z-index: 20000;">
+        <div class="support-box" style="border-color: #ffaa00; width: 450px;">
+            <h2 style="color: #ffaa00; font-size: 32px; margin-bottom: 15px;">Çıkış</h2>
+            <p id="confirm-text" style="font-size: 20px; color: white; margin-bottom: 30px;">Odayı kapatıp çıkmak ister misiniz?</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="menu-btn" style="width: 45%; padding: 10px; margin: 0; background: #555; border-color: #777;" onclick="closeConfirmModal()">Hayır</button>
+                <button class="menu-btn" style="width: 45%; padding: 10px; margin: 0; background: rgba(139,0,0,0.8);" onclick="executeConfirm()">Evet</button>
+            </div>
+        </div>
+    </div>
 
     <!-- DESTEK MENÜSÜ -->
     <div class="modal-overlay" id="support-modal">
@@ -208,12 +123,12 @@
         </div>
     </div>
 
-    <!-- 1. ANA MENÜ -->
+    <!-- 1. ANA MENÜ (İSİM GİRME ZORUNLU) -->
     <div id="main-menu" class="screen active-screen">
         <h1 class="title">UNO ONLINE</h1>
         <input type="text" id="global-player-name" class="global-input" placeholder="Oyuncu İsminiz...">
-        <button class="menu-btn" onclick="openLobby()">Oyna (Online)</button>
-        <button class="menu-btn" onclick="startBotGame()">Robot İle Oyna</button>
+        <button class="menu-btn" onclick="if(checkAndSavePlayerName()) showScreen('lobby-screen')">Oyna (Online)</button>
+        <button class="menu-btn" onclick="if(checkAndSavePlayerName()) startBotGame()">Robot İle Oyna</button>
         <button class="menu-btn" onclick="showScreen('settings-menu')">Ayarlar</button>
     </div>
 
@@ -291,29 +206,26 @@
         </div>
     </div>
 
-    <!-- 5. CANLI OYUN EKRANI -->
+    <!-- 5. OYUN EKRANI -->
     <div id="game-screen" class="screen">
         <div class="status-text" id="game-status">Oyun Başlıyor...</div>
         
-        <!-- Rakip Alanı -->
         <div class="opponent-area" id="opponent-area">
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
                 <div class="user-avatar" id="opponent-avatar-border">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </div>
-                <span id="opponent-name" style="font-weight: bold; font-size: 22px; text-shadow: 2px 2px 4px black;">Robot</span>
+                <span id="opponent-name" style="font-weight: bold; font-size: 22px; text-shadow: 2px 2px 4px black;">Bekleniyor...</span>
                 <span style="font-size: 18px; margin-left: 10px; color: #ffeb3b;">(Kalan: <span id="bot-card-count">7</span>)</span>
             </div>
             <div style="display: flex; justify-content: center; gap: 5px;" id="bot-hand-ui"></div>
         </div>
 
-        <!-- Orta Alan (Açılı Kartlar Buraya Düşer) -->
         <div class="center-area">
             <div class="card-back" style="cursor: pointer;" onclick="drawCard()">ÇEK</div>
             <div id="discard-pile" style="position: relative; width: 120px; height: 180px;"></div>
         </div>
 
-        <!-- Oyuncunun Alanı -->
         <div class="my-player-wrapper" id="my-player-wrapper">
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
                 <div class="user-avatar" id="my-avatar-border">
@@ -324,13 +236,44 @@
             <div class="player-area" id="player-hand-ui"></div>
         </div>
         
-        <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="showScreen('main-menu')">❮</button>
+        <!-- Oyun İçi Çıkış Butonu Modal İle Korundu -->
+        <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="customConfirm('Oyundan çıkmak istediğinize emin misiniz?', () => showScreen('main-menu'))">❮</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        // --- ÖZEL BİLDİRİM VE ONAY SİSTEMLERİ ---
+        function customAlert(msg, title = "Uyarı") {
+            document.getElementById('custom-alert-title').innerText = title;
+            document.getElementById('custom-alert-text').innerText = msg;
+            document.getElementById('custom-alert-modal').style.display = 'flex';
+            try { playClick(); } catch(e){}
+        }
+        function closeCustomAlert() {
+            document.getElementById('custom-alert-modal').style.display = 'none';
+            try { playClick(); } catch(e){}
+        }
+
+        let confirmAction = null;
+        function customConfirm(msg, onConfirm) {
+            document.getElementById('confirm-text').innerText = msg;
+            confirmAction = onConfirm;
+            document.getElementById('confirm-modal').style.display = 'flex';
+            try { playClick(); } catch(e){}
+        }
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').style.display = 'none';
+            confirmAction = null;
+            try { playClick(); } catch(e){}
+        }
+        function executeConfirm() {
+            document.getElementById('confirm-modal').style.display = 'none';
+            if(confirmAction) confirmAction();
+            try { playClick(); } catch(e){}
+        }
+
         function openSupport() { document.getElementById('support-modal').style.display = 'flex'; }
-        function closeSupport() { playClick(); document.getElementById('support-modal').style.display = 'none'; }
+        function closeSupport() { document.getElementById('support-modal').style.display = 'none'; try{playClick();}catch(e){} }
 
         const clickSound = document.getElementById('clickSound');
         const bgMusic = document.getElementById('bgMusic');
@@ -350,11 +293,17 @@
             else { bgMusic.play(); musicPlaying = true; musicBtn.innerText = '🎵'; }
         }
 
-        let currentName = "Bulut"; 
-        function savePlayerName() {
+        // --- ZORUNLU İSİM SİSTEMİ ---
+        let currentName = ""; 
+        function checkAndSavePlayerName() {
             const nameInput = document.getElementById('global-player-name').value.trim();
-            if(nameInput !== "") { currentName = nameInput; }
+            if(nameInput === "") {
+                customAlert("Oyuna başlamadan veya oda kurmadan önce lütfen bir İsim girin!", "İsim Gerekli");
+                return false;
+            }
+            currentName = nameInput;
             document.getElementById('my-player-name').innerText = currentName;
+            return true;
         }
 
         function showScreen(screenId) {
@@ -362,9 +311,8 @@
             document.getElementById(screenId).classList.add('active-screen');
         }
 
-        function openLobby() { savePlayerName(); showScreen('lobby-screen'); }
         function goToCreateRoom() {
-            savePlayerName();
+            if(!checkAndSavePlayerName()) return;
             document.getElementById('room-name-input').value = currentName + "'in Odası";
             showScreen('create-room-screen');
         }
@@ -375,18 +323,17 @@
             document.getElementById('btn-unlock').classList.remove('active');
             document.getElementById('btn-lock').classList.remove('active');
             const passInput = document.getElementById('room-password');
-            if(state) {
-                document.getElementById('btn-lock').classList.add('active'); passInput.style.display = 'block';
-            } else {
-                document.getElementById('btn-unlock').classList.add('active'); passInput.style.display = 'none'; passInput.value = '';
-            }
+            if(state) { document.getElementById('btn-lock').classList.add('active'); passInput.style.display = 'block'; } 
+            else { document.getElementById('btn-unlock').classList.add('active'); passInput.style.display = 'none'; passInput.value = ''; }
         }
         function changeTemp(value) { document.documentElement.style.setProperty('--color-temp', value / 100); }
 
+        // --- MULTIPLAYER SİSTEMİ ---
         let socket;
         let myRoomId = null;
         let amIHost = false;
         let tempJoinRoomId = null;
+        let isMultiplayer = false; 
 
         if (typeof io !== 'undefined') {
             socket = io();
@@ -425,36 +372,59 @@
                 updateWaitingRoomUI(room);
             });
 
-            // MULTIPLAYER CANLI OYUN BAŞLAMA OLAYI
+            // MULTIPLAYER OYUN BAŞLADIĞINDA ÇALIŞAN KOD
             socket.on('gameStartedMultiplayer', (room) => {
+                isMultiplayer = true;
                 showScreen('game-screen');
-                // Çok oyunculu modun kartlarını ve arayüzünü güncelleyeceğiz
+                
+                const me = room.players.find(p => p.id === socket.id);
+                playerHand = me.hand;
+                discardPile = room.discardPile;
+
+                const opponent = room.players.find(p => p.id !== socket.id);
+                if(opponent) {
+                    document.getElementById('opponent-name').innerText = opponent.name;
+                    document.getElementById('bot-card-count').innerText = opponent.hand.length;
+                    document.getElementById('opponent-avatar-border').style.borderColor = opponent.avatarColor;
+                }
+                
+                document.getElementById('my-avatar-border').style.borderColor = me.avatarColor;
+                
+                // Kurucu ilk başlar
+                setTurn(room.players[0].id === socket.id);
+                updateBoard();
             });
 
-            socket.on('roomClosed', () => { alert("Kurucu odayı kapattı!"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
-            socket.on('kicked', () => { alert("Kurucu seni odadan attı!"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
-            socket.on('errorMsg', (msg) => { alert(msg); });
+            // KARŞI TARAF KART ATTIĞINDA SENDE GÖZÜKMESİ
+            socket.on('cardPlayed', (data) => {
+                discardPile.push(data.card);
+                document.getElementById('bot-card-count').innerText = data.remaining;
+                setTurn(true); 
+                updateBoard();
+            });
+
+            socket.on('roomClosed', () => { customAlert("Kurucu odayı kapattı!", "Oda Kapandı"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
+            socket.on('kicked', () => { customAlert("Kurucu seni odadan attı!", "Atıldın"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
+            socket.on('errorMsg', (msg) => { customAlert(msg, "Hata"); });
         }
 
         function createRoom() {
-            savePlayerName();
+            if(!checkAndSavePlayerName()) return;
             const roomName = document.getElementById('room-name-input').value.trim();
             const roomPass = document.getElementById('room-password').value.trim();
-            if(roomName === "") { alert("Lütfen bir oda adı giriniz!"); return; }
-            if(isRoomLocked && roomPass === "") { alert("Kilitli odalar için şifre belirlemelisiniz!"); return; }
+            if(roomName === "") { customAlert("Lütfen bir oda adı giriniz!"); return; }
+            if(isRoomLocked && roomPass === "") { customAlert("Kilitli odalar için şifre belirlemelisiniz!"); return; }
             if(socket && socket.connected) {
                 socket.emit('createRoom', { name: roomName, maxPlayers: 4, isLocked: isRoomLocked, password: roomPass, hostName: currentName });
-            } else { alert("Sunucuya bağlanılamadı!"); }
+            } else { customAlert("Sunucuya bağlanılamadı!", "Hata"); }
         }
 
         function triggerStartGame() {
-            if(socket && myRoomId) {
-                socket.emit('startGame', myRoomId);
-            }
+            if(socket && myRoomId) { socket.emit('startGame', myRoomId); }
         }
 
         function attemptJoin(roomId, isLocked) {
-            savePlayerName();
+            if(!checkAndSavePlayerName()) return;
             tempJoinRoomId = roomId;
             if(isLocked) {
                 document.getElementById('password-modal').style.display = 'flex';
@@ -464,19 +434,19 @@
             }
         }
 
-        function closePasswordModal() { playClick(); document.getElementById('password-modal').style.display = 'none'; }
+        function closePasswordModal() { try{playClick();}catch(e){} document.getElementById('password-modal').style.display = 'none'; }
         function submitPassword() {
-            playClick();
+            try{playClick();}catch(e){}
             const pass = document.getElementById('join-password').value;
             socket.emit('joinRoom', { roomId: tempJoinRoomId, password: pass, playerName: currentName });
         }
 
         function leaveWaitingRoom() {
-            if(confirm("Odayı kapatıp çıkmak ister misiniz?")) {
+            customConfirm("Odayı kapatıp çıkmak ister misiniz?", () => {
                 if(socket) socket.emit('leaveRoom', myRoomId);
                 myRoomId = null; amIHost = false;
                 showScreen('lobby-screen');
-            }
+            });
         }
 
         function kickPlayer(playerId) {
@@ -486,20 +456,17 @@
         function updateWaitingRoomUI(room) {
             document.getElementById('waiting-room-title').innerText = room.name;
             document.getElementById('waiting-player-count').innerText = room.players.length;
-            
             const listUI = document.getElementById('waiting-player-list');
             listUI.innerHTML = "";
             
             room.players.forEach(p => {
                 let kickHtml = "";
-                if(amIHost && p.id !== socket.id) {
-                    kickHtml = `<button class="kick-btn" onclick="kickPlayer('${p.id}')">✖</button>`;
-                }
+                if(amIHost && p.id !== socket.id) { kickHtml = `<button class="kick-btn" onclick="kickPlayer('${p.id}')">✖</button>`; }
                 let icon = (p.id === room.hostId) ? '👑' : '👤';
                 listUI.innerHTML += `
                     <div class="waiting-player-item">
                         <div style="display: flex; align-items: center;">
-                            <div class="user-avatar" style="border-color: ${p.avatarColor}">
+                            <div class="user-avatar" style="border-color: ${p.avatarColor}; margin-right: 15px;">
                                 <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                             </div>
                             <span>${icon} ${p.name}</span>
@@ -515,56 +482,35 @@
             else { startBtn.style.display = 'none'; statusText.style.display = 'block'; }
         }
 
-        // --- GERÇEK UNO MOTORU VE AÇILI KART MEKANİĞİ ---
+        // --- OYUN MOTORU (Gerçek Deste) ---
         let playerHand = [];
         let botHand = [];
         let drawDeck = [];
         let discardPile = [];
         let isPlayerTurn = true;
 
-        // Birebir Resmi UNO Sembolleri
         function getSymbol(val) {
-            if (val === 'S') return '🚫'; // Skip
-            if (val === 'R') return '🔄'; // Reverse
-            if (val === 'W') return '🌈'; // Wild
+            if (val === 'S') return '🚫'; 
+            if (val === 'R') return '🔄'; 
+            if (val === 'W') return '🌈'; 
             return val;
         }
 
         function createCardHTML(card, isAngled = false) {
             const sym = getSymbol(card.value);
             const styleAngle = isAngled && card.angle ? `transform: rotate(${card.angle}deg); position: absolute; top:0; left:0;` : '';
-            return `
-                <div class="card ${card.color}" style="${styleAngle}">
-                    <div class="card-inner">
-                        <div class="card-oval"></div>
-                        <div class="card-value-small top-left">${sym}</div>
-                        <div class="card-value-center">${sym}</div>
-                        <div class="card-value-small bottom-right">${sym}</div>
-                    </div>
-                </div>
-            `;
+            return `<div class="card ${card.color}" style="${styleAngle}"><div class="card-inner"><div class="card-oval"></div><div class="card-value-small top-left">${sym}</div><div class="card-value-center">${sym}</div><div class="card-value-small bottom-right">${sym}</div></div></div>`;
         }
 
-        // 108 KARTLIK UNO DESTESİ ÜRETİMİ
         function generate108UnoDeck() {
             const colors = ['red', 'blue', 'green', 'yellow'];
             let deck = [];
             colors.forEach(c => {
                 deck.push({ color: c, value: '0' });
-                for (let i = 1; i <= 9; i++) {
-                    deck.push({ color: c, value: i.toString() });
-                    deck.push({ color: c, value: i.toString() });
-                }
-                for (let i = 0; i < 2; i++) {
-                    deck.push({ color: c, value: 'S' });
-                    deck.push({ color: c, value: 'R' });
-                    deck.push({ color: c, value: '+2' });
-                }
+                for (let i = 1; i <= 9; i++) { deck.push({ color: c, value: i.toString() }); deck.push({ color: c, value: i.toString() }); }
+                for (let i = 0; i < 2; i++) { deck.push({ color: c, value: 'S' }); deck.push({ color: c, value: 'R' }); deck.push({ color: c, value: '+2' }); }
             });
-            for (let i = 0; i < 4; i++) {
-                deck.push({ color: 'wild', value: 'W' });
-                deck.push({ color: 'wild', value: '+4' });
-            }
+            for (let i = 0; i < 4; i++) { deck.push({ color: 'wild', value: 'W' }); deck.push({ color: 'wild', value: '+4' }); }
             return shuffle(deck);
         }
 
@@ -577,9 +523,7 @@
         }
 
         function startBotGame() {
-            savePlayerName();
-            showScreen('game-screen');
-            
+            isMultiplayer = false;
             document.getElementById('my-avatar-border').style.borderColor = '#ff4d4d';
             document.getElementById('opponent-avatar-border').style.borderColor = '#4d79ff';
             document.getElementById('opponent-name').innerText = "Robot";
@@ -589,13 +533,11 @@
             botHand = drawDeck.splice(0, 7);
             
             let topCard = drawDeck.pop();
-            while(topCard.color === 'wild') {
-                drawDeck.unshift(topCard);
-                topCard = drawDeck.pop();
-            }
-            topCard.angle = Math.floor(Math.random() * 26) - 13; // Rastgele çapraz düşme açısı
+            while(topCard.color === 'wild') { drawDeck.unshift(topCard); topCard = drawDeck.pop(); }
+            topCard.angle = Math.floor(Math.random() * 26) - 13;
             discardPile = [topCard];
 
+            showScreen('game-screen');
             setTurn(true);
             updateBoard();
         }
@@ -604,31 +546,19 @@
             isPlayerTurn = isPlayer;
             const playerArea = document.getElementById('my-player-wrapper');
             const botArea = document.getElementById('opponent-area');
-            playerArea.classList.remove('active-turn');
-            botArea.classList.remove('active-turn');
-
-            if(isPlayer) {
-                playerArea.classList.add('active-turn');
-                document.getElementById('game-status').innerText = "Senin Sırandın!";
-            } else {
-                botArea.classList.add('active-turn');
-                document.getElementById('game-status').innerText = "Sıra Robot'ta...";
-            }
+            playerArea.classList.remove('active-turn'); botArea.classList.remove('active-turn');
+            if(isPlayer) { playerArea.classList.add('active-turn'); document.getElementById('game-status').innerText = "Senin Sırandın!"; } 
+            else { botArea.classList.add('active-turn'); document.getElementById('game-status').innerText = isMultiplayer ? "Rakip Oynuyor..." : "Sıra Robot'ta..."; }
         }
 
         function updateBoard() {
-            const discardUI = document.getElementById('discard-pile');
-            discardUI.innerHTML = "";
-            // Ortada son atılan kartları açılı üst üste yığar
-            discardPile.forEach(c => {
-                discardUI.innerHTML += createCardHTML(c, true);
-            });
+            const discardUI = document.getElementById('discard-pile'); discardUI.innerHTML = "";
+            discardPile.forEach(c => { discardUI.innerHTML += createCardHTML(c, true); });
 
-            document.getElementById('bot-card-count').innerText = botHand.length;
+            document.getElementById('bot-card-count').innerText = isMultiplayer ? (document.getElementById('bot-card-count').innerText) : botHand.length;
             const botUI = document.getElementById('bot-hand-ui'); botUI.innerHTML = "";
-            for(let i=0; i<botHand.length; i++) {
-                botUI.innerHTML += `<div class="card-back" style="width: 55px; height: 85px; font-size: 14px; border-width: 2px;">UNO</div>`;
-            }
+            const count = isMultiplayer ? parseInt(document.getElementById('bot-card-count').innerText) : botHand.length;
+            for(let i=0; i<count; i++) { botUI.innerHTML += `<div class="card-back" style="width: 55px; height: 85px; font-size: 14px; border-width: 2px;">UNO</div>`; }
 
             const playerUI = document.getElementById('player-hand-ui'); playerUI.innerHTML = "";
             playerHand.forEach((card, index) => {
@@ -650,68 +580,57 @@
             const card = playerHand[index];
             
             if (canPlay(card)) {
-                card.angle = Math.floor(Math.random() * 30) - 15; // Çapraz Düşme
+                card.angle = Math.floor(Math.random() * 30) - 15;
                 discardPile.push(card);
                 playerHand.splice(index, 1);
                 updateBoard();
                 
-                if (playerHand.length === 0) { alert("KAZANDIN! 🎉"); showScreen('main-menu'); return; }
+                if (playerHand.length === 0) { customAlert("KAZANDIN! 🎉", "Tebrikler"); showScreen('main-menu'); return; }
 
                 setTurn(false);
-                if(card.value === '+2' || card.value === 'S' || card.value === 'R' || card.value === '+4') {
+                
+                // Eğer oyunda bir oyuncu varsa hamlesi sunucuya bildirilir
+                if(isMultiplayer) {
+                    socket.emit('playCardMultiplayer', { roomId: myRoomId, card: card, remaining: playerHand.length });
+                } else {
                     if(card.value === '+2') drawCardsForBot(2);
                     if(card.value === '+4') drawCardsForBot(4);
                     setTimeout(() => { setTurn(true); updateBoard(); }, 1200);
-                } else { setTimeout(botTurn, 1200); }
+                    setTimeout(botTurn, 1200); 
+                }
             } else {
-                document.getElementById('game-status').innerText = "Bu kartı atamazsın!";
-                setTimeout(() => { document.getElementById('game-status').innerText = "Senin Sırandın!"; }, 1000);
+                customAlert("Bu kartı atamazsın!", "Geçersiz Hamle");
             }
         }
 
-        // DESTE BİTİNCE KARTLARI YENİDEN KARIŞTIRMA MEKANİĞİ
         function checkAndReshuffleDeck() {
-            if (drawDeck.length === 0) {
-                const topDiscard = discardPile.pop(); // En üsttekini sakla
-                drawDeck = shuffle(discardPile.map(c => ({...c, angle: 0}))); // Kalanları karıştır
-                discardPile = [topDiscard]; // Ortaya tekrar en son kartı koy
+            if (drawDeck && drawDeck.length === 0 && discardPile.length > 1) {
+                const topDiscard = discardPile.pop(); 
+                drawDeck = shuffle(discardPile.map(c => ({...c, angle: 0})));
+                discardPile = [topDiscard]; 
             }
         }
 
         function drawCard() {
-            if (!isPlayerTurn) return;
+            if (!isPlayerTurn || isMultiplayer) return; // Multiplayera deste mekaniği sonraki adıma eklenecek, şimdilik kitli
             checkAndReshuffleDeck();
             playerHand.push(drawDeck.pop());
             setTurn(false); updateBoard();
             setTimeout(botTurn, 1200);
         }
 
-        function drawCardsForBot(count) {
-            for(let i=0; i<count; i++) {
-                checkAndReshuffleDeck();
-                botHand.push(drawDeck.pop());
-            }
-        }
-
-        function drawCardsForPlayer(count) {
-            for(let i=0; i<count; i++) {
-                checkAndReshuffleDeck();
-                playerHand.push(drawDeck.pop());
-            }
-        }
+        function drawCardsForBot(count) { for(let i=0; i<count; i++) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); } }
+        function drawCardsForPlayer(count) { for(let i=0; i<count; i++) { checkAndReshuffleDeck(); playerHand.push(drawDeck.pop()); } }
 
         function botTurn() {
+            if(isMultiplayer) return;
             let played = false;
             for(let i=0; i<botHand.length; i++) {
                 if(canPlay(botHand[i])) {
                     const card = botHand[i];
-                    card.angle = Math.floor(Math.random() * 30) - 15; // Çapraz Düşme
-                    discardPile.push(card);
-                    botHand.splice(i, 1);
-                    played = true;
-                    
-                    if (botHand.length === 0) { alert("ROBOT KAZANDI! 😢"); showScreen('main-menu'); return; }
-                    
+                    card.angle = Math.floor(Math.random() * 30) - 15;
+                    discardPile.push(card); botHand.splice(i, 1); played = true;
+                    if (botHand.length === 0) { customAlert("ROBOT KAZANDI! 😢", "Oyun Bitti"); showScreen('main-menu'); return; }
                     if(card.value === '+2' || card.value === 'S' || card.value === 'R' || card.value === '+4') {
                         if(card.value === '+2') drawCardsForPlayer(2);
                         if(card.value === '+4') drawCardsForPlayer(4);
@@ -720,10 +639,7 @@
                     break;
                 }
             }
-            if(!played) {
-                checkAndReshuffleDeck();
-                botHand.push(drawDeck.pop());
-            }
+            if(!played) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); }
             setTurn(true); updateBoard();
         }
     </script>
