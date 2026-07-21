@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bulut UNO Online</title>
     <style>
         :root { --color-temp: 0; }
@@ -52,7 +53,7 @@
         .center-area { display: flex; justify-content: center; align-items: center; gap: 40px; flex: 1; position: relative; }
         .active-turn { box-shadow: 0 0 30px rgba(220, 20, 60, 0.8); background: rgba(220, 20, 60, 0.15); }
 
-        .card { width: 120px; height: 180px; background: white; border-radius: 12px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; transition: transform 0.2s, margin 0.2s; margin-left: -25px; border: 3px solid white; }
+        .card { width: 120px; height: 180px; background: white; border-radius: 12px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; transition: transform 0.2s, margin 0.2s; margin-left: -25px; border: 3px solid white; flex-shrink: 0; }
         .card:hover { transform: translateY(-20px) scale(1.05) !important; z-index: 50; margin-left: 5px; margin-right: 5px; }
         .card-inner { width: 92%; height: 92%; border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; }
         .card-oval { width: 85%; height: 55%; background: white; border-radius: 50% / 100% 100% 50% 50%; transform: skewY(-18deg); position: absolute; box-shadow: inset 0 0 5px rgba(0,0,0,0.2); }
@@ -64,8 +65,49 @@
         .green .card-inner { background: #27ae60; } .green .card-value-center { color: #27ae60; }
         .yellow .card-inner { background: #f39c12; } .yellow .card-value-center { color: #f39c12; }
         .wild .card-inner { background: #111; } .wild .card-oval { background: conic-gradient(#e74c3c 90deg, #2980b9 90deg 180deg, #27ae60 180deg 270deg, #f39c12 270deg); } .wild .card-value-center { color: white; text-shadow: 2px 2px 4px black; }
-        .card-back { background: #111; border: 4px solid white; color: #e74c3c; font-size: 32px; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 12px; width: 120px; height: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic; }
-        .status-text { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 22px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10; }
+        .card-back { background: #111; border: 4px solid white; color: #e74c3c; font-size: 32px; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 12px; width: 120px; height: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic; flex-shrink: 0; }
+        .status-text { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 22px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10; white-space: nowrap; }
+
+        /* ======================================================== */
+        /* === TELEFONLAR İÇİN ÖZEL UYARLAMA (RESPONSIVE TASARIM) === */
+        /* ======================================================== */
+        @media screen and (max-width: 768px) {
+            /* Başlıkları ve Kutuları Telefondan Taşırmamak İçin Küçült */
+            h1.title { font-size: 45px !important; margin-bottom: 10px; }
+            .menu-btn { width: 85vw !important; padding: 12px 20px !important; font-size: 18px !important; }
+            #global-player-name { width: 85vw !important; font-size: 18px !important; padding: 12px !important; }
+            .large-panel { width: 95vw !important; height: 90vh !important; padding: 15px !important; border-width: 2px !important; }
+            .panel-box { width: 90vw !important; padding: 20px !important; }
+            
+            /* Sol Üst Çıkış ve Sağ/Sol Alt Ses/Destek Butonlarını Küçült */
+            .circle-back-btn { width: 45px !important; height: 45px !important; font-size: 20px !important; top: 10px !important; left: 10px !important; border-width: 2px !important; }
+            .support-btn, .music-btn { width: 45px !important; height: 45px !important; font-size: 22px !important; bottom: 15px !important; }
+            .support-btn { left: 15px !important; } .music-btn { right: 15px !important; }
+            
+            /* Oyun İçi Bildirimleri ve Yazıları Ekrana Sığdır */
+            .status-text { font-size: 16px !important; padding: 5px 15px !important; top: 10px !important; }
+            #my-player-name, #opponent-name { font-size: 16px !important; }
+            .user-avatar { width: 35px !important; height: 35px !important; margin-right: 5px !important; border-width: 2px !important; }
+            .user-avatar svg { width: 20px !important; height: 20px !important; }
+            
+            /* Kartları Telefon Ekranına Uygun Hale Getir */
+            .card { width: 70px !important; height: 105px !important; margin-left: -15px !important; border-width: 2px !important; }
+            .card:hover { transform: translateY(-10px) scale(1.05) !important; margin-left: 2px !important; margin-right: 2px !important; }
+            .card-back { width: 70px !important; height: 105px !important; font-size: 18px !important; border-width: 2px !important; }
+            .card-value-center { font-size: 32px !important; }
+            .card-value-small { font-size: 12px !important; }
+            
+            /* Ortadaki Kart Çekme ve Atma Alanını Birbirine Yaklaştır */
+            .center-area { gap: 15px !important; }
+            
+            /* Kartların ekrandan taşmasını engellemek için kaydırma alanı düzeltmesi */
+            .player-area { gap: -15px !important; padding: 10px !important; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            
+            /* Uyarı (Alert) Pencerelerini Telefondan Taşırmama */
+            .support-box { width: 90vw !important; padding: 25px !important; }
+            #custom-alert-title, #confirm-text { font-size: 22px !important; }
+            #custom-alert-text { font-size: 16px !important; }
+        }
     </style>
 </head>
 <body>
@@ -152,7 +194,7 @@
     <div id="waiting-room-screen" class="screen">
         <button class="circle-back-btn" onclick="leaveWaitingRoom()">❮</button>
         <h1 class="title" id="waiting-room-title" style="font-size: 50px;">Oda Adı</h1>
-        <div class="panel-box" style="width: 600px;">
+        <div class="panel-box" style="width: 100%; max-width: 600px;">
             <h3 style="font-size: 24px; color: #aaa; margin-bottom: 20px;">Oyuncular (<span id="waiting-player-count">1</span>/4)</h3>
             <div id="waiting-player-list" style="margin-bottom: 20px;"></div>
             <p id="waiting-status" style="color: #ffeb3b; font-size: 20px; margin-bottom: 20px;">Kurucunun başlatması bekleniyor...</p>
@@ -203,7 +245,6 @@
             <div class="player-area" id="player-hand-ui"></div>
         </div>
         
-        <!-- OYUN İÇİ ÇIKIŞ DÜZELTİLDİ: Artık direkt sunucuya bildiriyor -->
         <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="customConfirm('Oyundan çıkmak istediğinize emin misiniz?', () => leaveGame())">❮</button>
     </div>
 
@@ -237,7 +278,6 @@
 
         function showScreen(screenId) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); document.getElementById(screenId).classList.add('active-screen'); }
         
-        // ZORUNLU YENİLEME: Oynaya basınca sunucudan en güncel oda listesini zorla çeker
         function openLobby() {
             if(!checkAndSavePlayerName()) return;
             if(socket && socket.connected) socket.emit('getRooms'); 
@@ -333,7 +373,6 @@
             if(socket && socket.connected) { socket.emit('createRoom', { name: roomName, maxPlayers: 4, isLocked: isRoomLocked, password: roomPass, hostName: currentName }); } else { customAlert("Sunucuya bağlanılamadı!", "Hata"); }
         }
 
-        // TEK KİŞİ BAŞLATMA ENGELİ (ARAYÜZ KISMI)
         function triggerStartGame() { 
             if (document.getElementById('waiting-player-count').innerText === "1") {
                 customAlert("Oyunu başlatmak için en az 2 kişi olmalıdır!", "Yetersiz Oyuncu");
@@ -353,7 +392,6 @@
 
         function leaveWaitingRoom() { customConfirm("Odayı kapatıp çıkmak ister misiniz?", () => { if(socket) socket.emit('leaveRoom', myRoomId); myRoomId = null; amIHost = false; showScreen('lobby-screen'); }); }
         
-        // OYUN İÇİNDEN ÇIKMA FONKSİYONU DÜZELTİLDİ
         function leaveGame() {
             if(isMultiplayer && socket && myRoomId) {
                 socket.emit('leaveRoom', myRoomId);
@@ -412,6 +450,13 @@
         function updateBoard() {
             const discardUI = document.getElementById('discard-pile'); discardUI.innerHTML = "";
             discardPile.forEach(c => { discardUI.innerHTML += createCardHTML(c, true); });
+            
+            /* Ortadaki Kart Atma Alanını Telefonda Sığdırmak İçin Konum Düzeltmesi */
+            const lastCard = discardUI.lastElementChild;
+            if (lastCard && window.innerWidth <= 768) {
+                 lastCard.style.position = "relative";
+            }
+
             const botCount = isMultiplayer ? parseInt(document.getElementById('bot-card-count').innerText) : botHand.length;
             const botUI = document.getElementById('bot-hand-ui'); botUI.innerHTML = "";
             for(let i=0; i<botCount; i++) { botUI.innerHTML += `<div class="card-back" style="width: 55px; height: 85px; font-size: 14px; border-width: 2px;">UNO</div>`; }
