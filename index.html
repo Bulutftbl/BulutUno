@@ -54,7 +54,7 @@
             background: rgba(20, 20, 20, 0.8); border: 3px solid rgba(139, 0, 0, 0.8);
             color: white; font-size: 30px; font-weight: bold;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 50;
         }
         .circle-back-btn:hover { background: rgba(139, 0, 0, 0.9); transform: scale(1.1); }
 
@@ -74,8 +74,17 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
+        /* --- RENKLİ KULLANICI AVATARI --- */
+        .user-avatar {
+            width: 50px; height: 50px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #222; border: 3px solid #ff4d4d; margin-right: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .user-avatar svg { width: 30px; height: 30px; fill: white; }
+
         .waiting-player-item {
-            background: rgba(40,40,40,0.8); padding: 15px 20px; border-radius: 10px;
+            background: rgba(40,40,40,0.8); padding: 10px 20px; border-radius: 10px;
             margin-bottom: 10px; font-size: 22px; font-weight: bold; border: 1px solid #555;
             display: flex; justify-content: space-between; align-items: center;
         }
@@ -127,25 +136,46 @@
         #room-password { display: none; margin-bottom: 20px; }
         #room-password::placeholder, #join-password::placeholder { color: #888; } 
 
+        /* OYUN İÇİ VE GERÇEKÇİ UNO KARTLARI */
         .game-board { display: flex; flex-direction: column; justify-content: space-between; height: 100vh; width: 100vw; padding: 20px; }
-        .opponent-area { text-align: center; position: relative; padding: 15px; border-radius: 15px; transition: 0.3s; }
-        .my-player-wrapper { text-align: center; position: relative; padding: 15px; border-radius: 15px; transition: 0.3s; }
-        .player-area { display: flex; gap: -20px; overflow-x: auto; padding: 20px; justify-content: center; }
-        .center-area { display: flex; justify-content: center; align-items: center; gap: 30px; flex: 1; }
-        .active-turn { box-shadow: 0 0 30px rgba(220, 20, 60, 0.8); background: rgba(220, 20, 60, 0.1); }
-        .card { width: 120px; height: 180px; background: white; border-radius: 10px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; transition: 0.2s; margin-left: -20px; }
-        .card:hover { transform: translateY(-20px); z-index: 10; margin-left: 10px; margin-right: 10px; }
-        .card-inner { width: 90%; height: 90%; border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; }
-        .card-oval { width: 80%; height: 50%; background: white; border-radius: 50% / 100% 100% 50% 50%; transform: skewY(-15deg); position: absolute; }
-        .card-value-center { font-size: 50px; font-weight: bold; position: relative; z-index: 2; text-shadow: 2px 2px 0px rgba(0,0,0,0.3); }
-        .card-value-small { position: absolute; font-size: 18px; font-weight: bold; color: white; }
-        .top-left { top: 5px; left: 8px; } .bottom-right { bottom: 5px; right: 8px; transform: rotate(180deg); }
-        .red .card-inner { background: #ff5555; } .red .card-value-center { color: #ff5555; }
-        .blue .card-inner { background: #5555ff; } .blue .card-value-center { color: #5555ff; }
-        .green .card-inner { background: #55ff55; } .green .card-value-center { color: #55ff55; }
-        .yellow .card-inner { background: #ffaa00; } .yellow .card-value-center { color: #ffaa00; }
-        .card-back { background: #222; border: 5px solid white; color: #ff5555; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 10px; width: 120px; height: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); }
-        .status-text { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); padding: 10px 20px; border-radius: 10px; font-size: 20px; border: 1px solid rgba(139, 0, 0, 0.5); }
+        .opponent-area { text-align: center; position: relative; padding: 10px; border-radius: 15px; transition: 0.3s; }
+        .my-player-wrapper { text-align: center; position: relative; padding: 10px; border-radius: 15px; transition: 0.3s; }
+        .player-area { display: flex; gap: -20px; overflow-x: auto; padding: 10px; justify-content: center; }
+        .center-area { display: flex; justify-content: center; align-items: center; gap: 40px; flex: 1; position: relative; }
+        .active-turn { box-shadow: 0 0 30px rgba(220, 20, 60, 0.8); background: rgba(220, 20, 60, 0.15); }
+
+        .card {
+            width: 120px; height: 180px; background: white; border-radius: 12px;
+            position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s, margin 0.2s; margin-left: -25px; border: 3px solid white;
+        }
+        .card:hover { transform: translateY(-20px) scale(1.05) !important; z-index: 50; margin-left: 5px; margin-right: 5px; }
+        
+        .card-inner { width: 92%; height: 92%; border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; }
+        .card-oval { width: 85%; height: 55%; background: white; border-radius: 50% / 100% 100% 50% 50%; transform: skewY(-18deg); position: absolute; box-shadow: inset 0 0 5px rgba(0,0,0,0.2); }
+        .card-value-center { font-size: 55px; font-weight: 900; position: relative; z-index: 2; text-shadow: 3px 3px 0px rgba(0,0,0,0.4); font-style: italic; }
+        .card-value-small { position: absolute; font-size: 20px; font-weight: bold; color: white; font-style: italic; text-shadow: 1px 1px 2px black; }
+        .top-left { top: 4px; left: 8px; } .bottom-right { bottom: 4px; right: 8px; transform: rotate(180deg); }
+
+        .red .card-inner { background: #e74c3c; } .red .card-value-center { color: #e74c3c; }
+        .blue .card-inner { background: #2980b9; } .blue .card-value-center { color: #2980b9; }
+        .green .card-inner { background: #27ae60; } .green .card-value-center { color: #27ae60; }
+        .yellow .card-inner { background: #f39c12; } .yellow .card-value-center { color: #f39c12; }
+        
+        .wild .card-inner { background: #111; } 
+        .wild .card-oval { background: conic-gradient(#e74c3c 90deg, #2980b9 90deg 180deg, #27ae60 180deg 270deg, #f39c12 270deg); }
+        .wild .card-value-center { color: white; text-shadow: 2px 2px 4px black; }
+
+        .card-back {
+            background: #111; border: 4px solid white; color: #e74c3c; font-size: 32px; font-weight: 900;
+            display: flex; align-items: center; justify-content: center; border-radius: 12px;
+            width: 120px; height: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic;
+        }
+        
+        .status-text {
+            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 22px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -228,7 +258,7 @@
             <h3 style="font-size: 24px; color: #aaa; margin-bottom: 20px;">Oyuncular (<span id="waiting-player-count">1</span>/4)</h3>
             <div id="waiting-player-list" style="margin-bottom: 20px;"></div>
             <p id="waiting-status" style="color: #ffeb3b; font-size: 20px; margin-bottom: 20px;">Kurucunun başlatması bekleniyor...</p>
-            <button id="start-game-btn" class="menu-btn" style="width: 100%; margin: 0; display: none;" onclick="alert('Oyun mekaniği başlatılıyor...')">Oyunu Başlat</button>
+            <button id="start-game-btn" class="menu-btn" style="width: 100%; margin: 0; display: none;" onclick="triggerStartGame()">Oyunu Başlat</button>
         </div>
     </div>
 
@@ -261,25 +291,42 @@
         </div>
     </div>
 
-    <!-- 5. OYUN EKRANI -->
+    <!-- 5. CANLI OYUN EKRANI -->
     <div id="game-screen" class="screen">
         <div class="status-text" id="game-status">Oyun Başlıyor...</div>
+        
+        <!-- Rakip Alanı -->
         <div class="opponent-area" id="opponent-area">
-            <p style="margin-bottom: 10px; font-weight: bold; font-size: 20px; text-shadow: 2px 2px 4px black;">👤 <span id="opponent-name">Robot</span> (Kalan: <span id="bot-card-count">7</span>)</p>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <div class="user-avatar" id="opponent-avatar-border">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <span id="opponent-name" style="font-weight: bold; font-size: 22px; text-shadow: 2px 2px 4px black;">Robot</span>
+                <span style="font-size: 18px; margin-left: 10px; color: #ffeb3b;">(Kalan: <span id="bot-card-count">7</span>)</span>
+            </div>
             <div style="display: flex; justify-content: center; gap: 5px;" id="bot-hand-ui"></div>
         </div>
+
+        <!-- Orta Alan (Açılı Kartlar Buraya Düşer) -->
         <div class="center-area">
             <div class="card-back" style="cursor: pointer;" onclick="drawCard()">ÇEK</div>
-            <div id="discard-pile"></div>
+            <div id="discard-pile" style="position: relative; width: 120px; height: 180px;"></div>
         </div>
+
+        <!-- Oyuncunun Alanı -->
         <div class="my-player-wrapper" id="my-player-wrapper">
-            <p style="margin-bottom: 10px; font-weight: bold; font-size: 20px; text-shadow: 2px 2px 4px black;">👤 <span id="my-player-name">Oyuncu</span></p>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <div class="user-avatar" id="my-avatar-border">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <span id="my-player-name" style="font-weight: bold; font-size: 22px; text-shadow: 2px 2px 4px black;">Oyuncu</span>
+            </div>
             <div class="player-area" id="player-hand-ui"></div>
         </div>
+        
         <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="showScreen('main-menu')">❮</button>
     </div>
 
-    <!-- Socket.io -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
         function openSupport() { document.getElementById('support-modal').style.display = 'flex'; }
@@ -378,21 +425,15 @@
                 updateWaitingRoomUI(room);
             });
 
-            socket.on('roomClosed', () => {
-                alert("Kurucu odayı kapattı!");
-                myRoomId = null; amIHost = false;
-                showScreen('lobby-screen');
+            // MULTIPLAYER CANLI OYUN BAŞLAMA OLAYI
+            socket.on('gameStartedMultiplayer', (room) => {
+                showScreen('game-screen');
+                // Çok oyunculu modun kartlarını ve arayüzünü güncelleyeceğiz
             });
 
-            socket.on('kicked', () => {
-                alert("Kurucu seni odadan attı!");
-                myRoomId = null; amIHost = false;
-                showScreen('lobby-screen');
-            });
-
-            socket.on('errorMsg', (msg) => {
-                alert(msg);
-            });
+            socket.on('roomClosed', () => { alert("Kurucu odayı kapattı!"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
+            socket.on('kicked', () => { alert("Kurucu seni odadan attı!"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
+            socket.on('errorMsg', (msg) => { alert(msg); });
         }
 
         function createRoom() {
@@ -401,11 +442,14 @@
             const roomPass = document.getElementById('room-password').value.trim();
             if(roomName === "") { alert("Lütfen bir oda adı giriniz!"); return; }
             if(isRoomLocked && roomPass === "") { alert("Kilitli odalar için şifre belirlemelisiniz!"); return; }
-            
             if(socket && socket.connected) {
                 socket.emit('createRoom', { name: roomName, maxPlayers: 4, isLocked: isRoomLocked, password: roomPass, hostName: currentName });
-            } else {
-                alert("Sunucuya bağlanılamadı!");
+            } else { alert("Sunucuya bağlanılamadı!"); }
+        }
+
+        function triggerStartGame() {
+            if(socket && myRoomId) {
+                socket.emit('startGame', myRoomId);
             }
         }
 
@@ -454,7 +498,12 @@
                 let icon = (p.id === room.hostId) ? '👑' : '👤';
                 listUI.innerHTML += `
                     <div class="waiting-player-item">
-                        <span>${icon} ${p.name}</span>
+                        <div style="display: flex; align-items: center;">
+                            <div class="user-avatar" style="border-color: ${p.avatarColor}">
+                                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            </div>
+                            <span>${icon} ${p.name}</span>
+                        </div>
                         ${kickHtml}
                     </div>
                 `;
@@ -462,28 +511,221 @@
 
             const startBtn = document.getElementById('start-game-btn');
             const statusText = document.getElementById('waiting-status');
-            if(amIHost) {
-                startBtn.style.display = 'block';
-                statusText.style.display = 'none';
+            if(amIHost) { startBtn.style.display = 'block'; statusText.style.display = 'none'; } 
+            else { startBtn.style.display = 'none'; statusText.style.display = 'block'; }
+        }
+
+        // --- GERÇEK UNO MOTORU VE AÇILI KART MEKANİĞİ ---
+        let playerHand = [];
+        let botHand = [];
+        let drawDeck = [];
+        let discardPile = [];
+        let isPlayerTurn = true;
+
+        // Birebir Resmi UNO Sembolleri
+        function getSymbol(val) {
+            if (val === 'S') return '🚫'; // Skip
+            if (val === 'R') return '🔄'; // Reverse
+            if (val === 'W') return '🌈'; // Wild
+            return val;
+        }
+
+        function createCardHTML(card, isAngled = false) {
+            const sym = getSymbol(card.value);
+            const styleAngle = isAngled && card.angle ? `transform: rotate(${card.angle}deg); position: absolute; top:0; left:0;` : '';
+            return `
+                <div class="card ${card.color}" style="${styleAngle}">
+                    <div class="card-inner">
+                        <div class="card-oval"></div>
+                        <div class="card-value-small top-left">${sym}</div>
+                        <div class="card-value-center">${sym}</div>
+                        <div class="card-value-small bottom-right">${sym}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 108 KARTLIK UNO DESTESİ ÜRETİMİ
+        function generate108UnoDeck() {
+            const colors = ['red', 'blue', 'green', 'yellow'];
+            let deck = [];
+            colors.forEach(c => {
+                deck.push({ color: c, value: '0' });
+                for (let i = 1; i <= 9; i++) {
+                    deck.push({ color: c, value: i.toString() });
+                    deck.push({ color: c, value: i.toString() });
+                }
+                for (let i = 0; i < 2; i++) {
+                    deck.push({ color: c, value: 'S' });
+                    deck.push({ color: c, value: 'R' });
+                    deck.push({ color: c, value: '+2' });
+                }
+            });
+            for (let i = 0; i < 4; i++) {
+                deck.push({ color: 'wild', value: 'W' });
+                deck.push({ color: 'wild', value: '+4' });
+            }
+            return shuffle(deck);
+        }
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startBotGame() {
+            savePlayerName();
+            showScreen('game-screen');
+            
+            document.getElementById('my-avatar-border').style.borderColor = '#ff4d4d';
+            document.getElementById('opponent-avatar-border').style.borderColor = '#4d79ff';
+            document.getElementById('opponent-name').innerText = "Robot";
+            
+            drawDeck = generate108UnoDeck();
+            playerHand = drawDeck.splice(0, 7);
+            botHand = drawDeck.splice(0, 7);
+            
+            let topCard = drawDeck.pop();
+            while(topCard.color === 'wild') {
+                drawDeck.unshift(topCard);
+                topCard = drawDeck.pop();
+            }
+            topCard.angle = Math.floor(Math.random() * 26) - 13; // Rastgele çapraz düşme açısı
+            discardPile = [topCard];
+
+            setTurn(true);
+            updateBoard();
+        }
+
+        function setTurn(isPlayer) {
+            isPlayerTurn = isPlayer;
+            const playerArea = document.getElementById('my-player-wrapper');
+            const botArea = document.getElementById('opponent-area');
+            playerArea.classList.remove('active-turn');
+            botArea.classList.remove('active-turn');
+
+            if(isPlayer) {
+                playerArea.classList.add('active-turn');
+                document.getElementById('game-status').innerText = "Senin Sırandın!";
             } else {
-                startBtn.style.display = 'none';
-                statusText.style.display = 'block';
+                botArea.classList.add('active-turn');
+                document.getElementById('game-status').innerText = "Sıra Robot'ta...";
             }
         }
 
-        // BOT MOTORU
-        const colors = ['red', 'blue', 'green', 'yellow'];
-        const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'S', 'R', '+2'];
-        let playerHand = []; let botHand = []; let currentCard = null; let isPlayerTurn = true;
-        function createCardHTML(color, value) { const displayValue = value === 'S' ? '🚫' : value === 'R' ? '🔄' : value; return `<div class="card ${color}"><div class="card-inner"><div class="card-oval"></div><div class="card-value-small top-left">${displayValue}</div><div class="card-value-center">${displayValue}</div><div class="card-value-small bottom-right">${displayValue}</div></div></div>`; }
-        function randomCard() { return { color: colors[Math.floor(Math.random() * colors.length)], value: values[Math.floor(Math.random() * values.length)] }; }
-        function startBotGame() { savePlayerName(); showScreen('game-screen'); document.getElementById('opponent-name').innerText = "Robot"; playerHand = []; botHand = []; setTurn(true); for(let i=0; i<7; i++) { playerHand.push(randomCard()); botHand.push(randomCard()); } currentCard = { color: colors[Math.floor(Math.random() * colors.length)], value: Math.floor(Math.random() * 9).toString() }; updateBoard(); }
-        function setTurn(isPlayer) { isPlayerTurn = isPlayer; const playerArea = document.getElementById('my-player-wrapper'); const botArea = document.getElementById('opponent-area'); playerArea.classList.remove('active-turn'); botArea.classList.remove('active-turn'); if(isPlayer) { playerArea.classList.add('active-turn'); document.getElementById('game-status').innerText = "Senin Sırandın!"; } else { botArea.classList.add('active-turn'); document.getElementById('game-status').innerText = "Sıra Robot'ta..."; } }
-        function updateBoard() { document.getElementById('discard-pile').innerHTML = createCardHTML(currentCard.color, currentCard.value); document.getElementById('bot-card-count').innerText = botHand.length; const botUI = document.getElementById('bot-hand-ui'); botUI.innerHTML = ""; for(let i=0; i<botHand.length; i++) { botUI.innerHTML += `<div class="card-back" style="width: 60px; height: 90px; font-size: 14px; border-width: 2px;">UNO</div>`; } const playerUI = document.getElementById('player-hand-ui'); playerUI.innerHTML = ""; playerHand.forEach((card, index) => { const tempDiv = document.createElement('div'); tempDiv.innerHTML = createCardHTML(card.color, card.value); const cardElement = tempDiv.firstElementChild; cardElement.onclick = () => { playClick(); playCard(index); }; playerUI.appendChild(cardElement); }); }
-        function canPlay(card) { return card.color === currentCard.color || card.value === currentCard.value; }
-        function playCard(index) { if (!isPlayerTurn) return; const card = playerHand[index]; if (canPlay(card)) { currentCard = card; playerHand.splice(index, 1); updateBoard(); if (playerHand.length === 0) { alert("KAZANDIN! 🎉"); showScreen('main-menu'); return; } setTurn(false); if(card.value === '+2' || card.value === 'S' || card.value === 'R') { if(card.value === '+2') { botHand.push(randomCard()); botHand.push(randomCard()); } setTimeout(() => { setTurn(true); updateBoard(); }, 1500); } else { setTimeout(botTurn, 1500); } } else { document.getElementById('game-status').innerText = "Bu kartı atamazsın!"; setTimeout(() => { document.getElementById('game-status').innerText = "Senin Sırandın!"; }, 1000); } }
-        function drawCard() { if (!isPlayerTurn) return; playerHand.push(randomCard()); setTurn(false); updateBoard(); setTimeout(botTurn, 1500); }
-        function botTurn() { let played = false; for(let i=0; i<botHand.length; i++) { if(canPlay(botHand[i])) { currentCard = botHand[i]; botHand.splice(i, 1); played = true; if (botHand.length === 0) { alert("ROBOT KAZANDI! 😢"); showScreen('main-menu'); return; } if(currentCard.value === '+2' || currentCard.value === 'S' || currentCard.value === 'R') { if(currentCard.value === '+2') { playerHand.push(randomCard()); playerHand.push(randomCard()); } setTimeout(botTurn, 1500); updateBoard(); return; } break; } } if(!played) botHand.push(randomCard()); setTurn(true); updateBoard(); }
+        function updateBoard() {
+            const discardUI = document.getElementById('discard-pile');
+            discardUI.innerHTML = "";
+            // Ortada son atılan kartları açılı üst üste yığar
+            discardPile.forEach(c => {
+                discardUI.innerHTML += createCardHTML(c, true);
+            });
+
+            document.getElementById('bot-card-count').innerText = botHand.length;
+            const botUI = document.getElementById('bot-hand-ui'); botUI.innerHTML = "";
+            for(let i=0; i<botHand.length; i++) {
+                botUI.innerHTML += `<div class="card-back" style="width: 55px; height: 85px; font-size: 14px; border-width: 2px;">UNO</div>`;
+            }
+
+            const playerUI = document.getElementById('player-hand-ui'); playerUI.innerHTML = "";
+            playerHand.forEach((card, index) => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = createCardHTML(card);
+                const cardEl = tempDiv.firstElementChild;
+                cardEl.onclick = () => { playClick(); playCard(index); };
+                playerUI.appendChild(cardEl);
+            });
+        }
+
+        function canPlay(card) {
+            const top = discardPile[discardPile.length - 1];
+            return card.color === 'wild' || card.color === top.color || card.value === top.value;
+        }
+
+        function playCard(index) {
+            if (!isPlayerTurn) return;
+            const card = playerHand[index];
+            
+            if (canPlay(card)) {
+                card.angle = Math.floor(Math.random() * 30) - 15; // Çapraz Düşme
+                discardPile.push(card);
+                playerHand.splice(index, 1);
+                updateBoard();
+                
+                if (playerHand.length === 0) { alert("KAZANDIN! 🎉"); showScreen('main-menu'); return; }
+
+                setTurn(false);
+                if(card.value === '+2' || card.value === 'S' || card.value === 'R' || card.value === '+4') {
+                    if(card.value === '+2') drawCardsForBot(2);
+                    if(card.value === '+4') drawCardsForBot(4);
+                    setTimeout(() => { setTurn(true); updateBoard(); }, 1200);
+                } else { setTimeout(botTurn, 1200); }
+            } else {
+                document.getElementById('game-status').innerText = "Bu kartı atamazsın!";
+                setTimeout(() => { document.getElementById('game-status').innerText = "Senin Sırandın!"; }, 1000);
+            }
+        }
+
+        // DESTE BİTİNCE KARTLARI YENİDEN KARIŞTIRMA MEKANİĞİ
+        function checkAndReshuffleDeck() {
+            if (drawDeck.length === 0) {
+                const topDiscard = discardPile.pop(); // En üsttekini sakla
+                drawDeck = shuffle(discardPile.map(c => ({...c, angle: 0}))); // Kalanları karıştır
+                discardPile = [topDiscard]; // Ortaya tekrar en son kartı koy
+            }
+        }
+
+        function drawCard() {
+            if (!isPlayerTurn) return;
+            checkAndReshuffleDeck();
+            playerHand.push(drawDeck.pop());
+            setTurn(false); updateBoard();
+            setTimeout(botTurn, 1200);
+        }
+
+        function drawCardsForBot(count) {
+            for(let i=0; i<count; i++) {
+                checkAndReshuffleDeck();
+                botHand.push(drawDeck.pop());
+            }
+        }
+
+        function drawCardsForPlayer(count) {
+            for(let i=0; i<count; i++) {
+                checkAndReshuffleDeck();
+                playerHand.push(drawDeck.pop());
+            }
+        }
+
+        function botTurn() {
+            let played = false;
+            for(let i=0; i<botHand.length; i++) {
+                if(canPlay(botHand[i])) {
+                    const card = botHand[i];
+                    card.angle = Math.floor(Math.random() * 30) - 15; // Çapraz Düşme
+                    discardPile.push(card);
+                    botHand.splice(i, 1);
+                    played = true;
+                    
+                    if (botHand.length === 0) { alert("ROBOT KAZANDI! 😢"); showScreen('main-menu'); return; }
+                    
+                    if(card.value === '+2' || card.value === 'S' || card.value === 'R' || card.value === '+4') {
+                        if(card.value === '+2') drawCardsForPlayer(2);
+                        if(card.value === '+4') drawCardsForPlayer(4);
+                        setTimeout(botTurn, 1200); updateBoard(); return;
+                    }
+                    break;
+                }
+            }
+            if(!played) {
+                checkAndReshuffleDeck();
+                botHand.push(drawDeck.pop());
+            }
+            setTurn(true); updateBoard();
+        }
     </script>
 </body>
 </html>
