@@ -40,6 +40,12 @@ function shuffleDeck(deck) {
 const avatarColors = ['#ff4d4d', '#4d79ff', '#2ecc71', '#f1c40f', '#9b59b6'];
 
 io.on('connection', (socket) => {
+    
+    // TELEFONLAR İÇİN ODA LİSTESİNİ ZORLA YENİLEME
+    socket.on('getRooms', () => {
+        socket.emit('updateRoomList', rooms);
+    });
+
     socket.on('createRoom', (data) => {
         const roomId = "Oda_" + Math.floor(Math.random() * 10000);
         rooms[roomId] = {
@@ -73,6 +79,13 @@ io.on('connection', (socket) => {
     socket.on('startGame', (roomId) => {
         const room = rooms[roomId];
         if (room && room.hostId === socket.id) {
+            
+            // TEK KİŞİYLE BAŞLAMA ENGELİ
+            if (room.players.length < 2) {
+                socket.emit('errorMsg', 'Oyunu başlatmak için en az 2 kişi olmalıdır!');
+                return;
+            }
+
             room.isStarted = true;
             room.deck = createUnoDeck();
             room.players.forEach(p => { p.hand = room.deck.splice(0, 7); });
@@ -89,14 +102,12 @@ io.on('connection', (socket) => {
         }
     });
 
-    // RAKİBE KART ATILDIĞINI BİLDİR
     socket.on('playCardMultiplayer', (data) => {
         const room = rooms[data.roomId];
         if (room) room.discardPile.push(data.card);
         socket.to(data.roomId).emit('cardPlayed', { card: data.card, remaining: data.remaining });
     });
 
-    // CANLI KART ÇEKME SİSTEMİ (CEZALI ÇEKİMLER DAHİL)
     socket.on('drawCards', (data) => {
         const room = rooms[data.roomId];
         if (room && room.isStarted) {
@@ -114,7 +125,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // ODADAN AYRILINCA VEYA KOPUNCA BİLDİRİM VERME
     socket.on('leaveRoom', (roomId) => {
         const room = rooms[roomId];
         if (room) {
