@@ -118,7 +118,7 @@
     <div id="main-menu" class="screen active-screen">
         <h1 class="title">UNO ONLINE</h1>
         <input type="text" id="global-player-name" class="global-input" placeholder="Oyuncu İsminiz...">
-        <button class="menu-btn" onclick="if(checkAndSavePlayerName()) showScreen('lobby-screen')">Oyna (Online)</button>
+        <button class="menu-btn" onclick="openLobby()">Oyna (Online)</button>
         <button class="menu-btn" onclick="if(checkAndSavePlayerName()) startBotGame()">Robot İle Oyna</button>
         <button class="menu-btn" onclick="showScreen('settings-menu')">Ayarlar</button>
     </div>
@@ -203,7 +203,8 @@
             <div class="player-area" id="player-hand-ui"></div>
         </div>
         
-        <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="customConfirm('Oyundan çıkmak istediğinize emin misiniz?', () => showScreen('main-menu'))">❮</button>
+        <!-- OYUN İÇİ ÇIKIŞ DÜZELTİLDİ: Artık direkt sunucuya bildiriyor -->
+        <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="customConfirm('Oyundan çıkmak istediğinize emin misiniz?', () => leaveGame())">❮</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -235,6 +236,14 @@
         }
 
         function showScreen(screenId) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); document.getElementById(screenId).classList.add('active-screen'); }
+        
+        // ZORUNLU YENİLEME: Oynaya basınca sunucudan en güncel oda listesini zorla çeker
+        function openLobby() {
+            if(!checkAndSavePlayerName()) return;
+            if(socket && socket.connected) socket.emit('getRooms'); 
+            showScreen('lobby-screen');
+        }
+
         function goToCreateRoom() { if(!checkAndSavePlayerName()) return; document.getElementById('room-name-input').value = currentName + "'in Odası"; showScreen('create-room-screen'); }
         
         let isRoomLocked = false;
@@ -247,10 +256,8 @@
         function changeTemp(value) { document.documentElement.style.setProperty('--color-temp', value / 100); }
 
         let socket; let myRoomId = null; let amIHost = false; let tempJoinRoomId = null; let isMultiplayer = false; 
-
-        // OYUN MOTORU DEĞİŞKENLERİ
         let playerHand = []; let botHand = []; let drawDeck = []; let discardPile = []; let isPlayerTurn = true;
-        let penaltyCount = 0; // Katlanarak Büyüyen Ceza Kartı (Katlama Mekaniği)
+        let penaltyCount = 0; 
 
         if (typeof io !== 'undefined') {
             socket = io();
@@ -268,7 +275,6 @@
             socket.on('roomJoined', (data) => { myRoomId = data.room.id; amIHost = data.isHost; showScreen('waiting-room-screen'); closePasswordModal(); updateWaitingRoomUI(data.room); });
             socket.on('updateWaitingRoom', (room) => { updateWaitingRoomUI(room); });
 
-            // RAKİP OYUNDAN ÇIKTIĞINDA
             socket.on('opponentLeft', (msg) => {
                 customAlert(msg, "Oyun Bitti");
                 myRoomId = null; amIHost = false; isMultiplayer = false; penaltyCount = 0;
@@ -316,7 +322,7 @@
 
             socket.on('roomClosed', () => { customAlert("Kurucu odayı kapattı!", "Oda Kapandı"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
             socket.on('kicked', () => { customAlert("Kurucu seni odadan attı!", "Atıldın"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
-            socket.on('errorMsg', (msg) => { customAlert(msg, "Hata"); });
+            socket.on('errorMsg', (msg) => { customAlert(msg, "Uyarı"); });
         }
 
         function createRoom() {
@@ -327,7 +333,15 @@
             if(socket && socket.connected) { socket.emit('createRoom', { name: roomName, maxPlayers: 4, isLocked: isRoomLocked, password: roomPass, hostName: currentName }); } else { customAlert("Sunucuya bağlanılamadı!", "Hata"); }
         }
 
-        function triggerStartGame() { if(socket && myRoomId) socket.emit('startGame', myRoomId); }
+        // TEK KİŞİ BAŞLATMA ENGELİ (ARAYÜZ KISMI)
+        function triggerStartGame() { 
+            if (document.getElementById('waiting-player-count').innerText === "1") {
+                customAlert("Oyunu başlatmak için en az 2 kişi olmalıdır!", "Yetersiz Oyuncu");
+                return;
+            }
+            if(socket && myRoomId) socket.emit('startGame', myRoomId); 
+        }
+        
         function attemptJoin(roomId, isLocked) {
             if(!checkAndSavePlayerName()) return;
             tempJoinRoomId = roomId;
@@ -338,6 +352,16 @@
         function submitPassword() { try{playClick();}catch(e){} const pass = document.getElementById('join-password').value; socket.emit('joinRoom', { roomId: tempJoinRoomId, password: pass, playerName: currentName }); }
 
         function leaveWaitingRoom() { customConfirm("Odayı kapatıp çıkmak ister misiniz?", () => { if(socket) socket.emit('leaveRoom', myRoomId); myRoomId = null; amIHost = false; showScreen('lobby-screen'); }); }
+        
+        // OYUN İÇİNDEN ÇIKMA FONKSİYONU DÜZELTİLDİ
+        function leaveGame() {
+            if(isMultiplayer && socket && myRoomId) {
+                socket.emit('leaveRoom', myRoomId);
+            }
+            myRoomId = null; amIHost = false; isMultiplayer = false; penaltyCount = 0;
+            showScreen('main-menu');
+        }
+
         function kickPlayer(playerId) { if(amIHost) socket.emit('kickPlayer', { roomId: myRoomId, playerId: playerId }); }
 
         function updateWaitingRoomUI(room) {
@@ -352,7 +376,6 @@
             if(amIHost) { startBtn.style.display = 'block'; statusText.style.display = 'none'; } else { startBtn.style.display = 'none'; statusText.style.display = 'block'; }
         }
 
-        // --- UNO KURALLARI VE KATLAMA MOTORU ---
         function getSymbol(val) { if (val === 'S') return '🚫'; if (val === 'R') return '🔄'; if (val === 'W') return '🌈'; return val; }
         function createCardHTML(card, isAngled = false) {
             const sym = getSymbol(card.value); const styleAngle = isAngled && card.angle ? `transform: rotate(${card.angle}deg); position: absolute; top:0; left:0;` : '';
@@ -402,7 +425,6 @@
 
         function canPlay(card) {
             const top = discardPile[discardPile.length - 1];
-            // EĞER ORTADA CEZA VARSA SADECE AYNI + KARTINI ATARAK KATLAYABİLİR (+2 üzerine +2, +4 üzerine +4)
             if (penaltyCount > 0) { return card.value === top.value && card.value.includes('+'); }
             return card.color === 'wild' || card.color === top.color || card.value === top.value;
         }
@@ -411,7 +433,6 @@
             if (!isPlayerTurn) return;
             const card = playerHand[index];
             
-            // Eğer cezalı ise yanlış hamle yapılmasını engelle
             if (penaltyCount > 0 && !(card.value === discardPile[discardPile.length-1].value && card.value.includes('+'))) {
                 customAlert(`Cezalı durumdasın! Sadece ${discardPile[discardPile.length-1].value} atarak cezayı katlayabilirsin veya kart ÇEK'melisin.`, "Geçersiz Hamle");
                 return;
