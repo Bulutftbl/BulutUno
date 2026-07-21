@@ -7,15 +7,22 @@
     <style>
         :root { --color-temp: 0; }
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; cursor: url("png-clipart-hand-cursor-illustration-computer-mouse-pointer-cursor-icon-computer-mouse-arrow-hand-rectangle-thumbnail.png") 12 5, auto !important; }
+        
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; color: white; background: url('de9fac23ab831da3e0746c6fbe2b367e.jpg') no-repeat center center fixed; background-size: cover; }
         #screen-filter { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; background: rgba(255, 150, 0, var(--color-temp)); mix-blend-mode: overlay; z-index: 9999; }
-        .screen { display: none; width: 100vw; height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.5); }
+        
+        .screen { display: none; width: 100vw; height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.7); transition: backdrop-filter 0.5s; }
         .active-screen { display: flex; }
+        
+        /* Blur Arka Plan Sınıfı */
+        .bg-blur { background: rgba(0, 0, 0, 0.3) !important; backdrop-filter: blur(15px); }
+
         h1.title { font-size: 80px; text-shadow: 4px 4px 0px rgba(0,0,0,0.9); margin-bottom: 20px; color: #fff; letter-spacing: 5px; }
 
         .menu-btn { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(5px); border: 2px solid rgba(139, 0, 0, 0.8); color: white; padding: 15px 40px; font-size: 24px; font-weight: bold; border-radius: 30px; margin: 10px; width: 300px; transition: all 0.2s ease; box-shadow: 0 8px 15px rgba(0,0,0,0.6); }
         .menu-btn:hover { background: rgba(60, 10, 10, 0.9); border: 2px solid rgba(220, 20, 60, 1); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(139, 0, 0, 0.7); }
-        .circle-back-btn { position: absolute; top: 30px; left: 30px; width: 60px; height: 60px; border-radius: 50%; background: rgba(20, 20, 20, 0.8); border: 3px solid rgba(139, 0, 0, 0.8); color: white; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 50; }
+        
+        .circle-back-btn { position: absolute; left: 30px; width: 60px; height: 60px; border-radius: 50%; background: rgba(20, 20, 20, 0.8); border: 3px solid rgba(139, 0, 0, 0.8); color: white; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 50; }
         .circle-back-btn:hover { background: rgba(139, 0, 0, 0.9); transform: scale(1.1); }
 
         .large-panel { background: rgba(15, 15, 15, 0.85); border: 4px solid rgba(139, 0, 0, 0.9); box-shadow: 0 0 30px rgba(139, 0, 0, 0.5); width: 80vw; height: 80vh; border-radius: 20px; padding: 30px; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
@@ -29,9 +36,11 @@
         .kick-btn { display: none; color: #ff5555; font-size: 24px; font-weight: bold; background: none; border: none; padding: 0 10px; transition: 0.2s; }
         .kick-btn:hover { transform: scale(1.3); color: #ff0000; }
         .waiting-player-item:hover .kick-btn { display: block; }
+        
         .lock-group { display: flex; gap: 10px; justify-content: center; margin: 15px 0 10px 0; }
         .lock-btn { background: rgba(40,40,40,0.8); border: 2px solid #555; font-size: 24px; padding: 10px 20px; border-radius: 10px; transition: 0.3s; }
         .lock-btn.active { background: rgba(139, 0, 0, 0.8); border-color: rgba(220, 20, 60, 1); }
+        
         .support-btn, .music-btn { position: fixed; bottom: 30px; width: 60px; height: 60px; background: rgba(20, 20, 20, 0.8); border: 2px solid rgba(139, 0, 0, 0.6); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 100; }
         .support-btn { left: 30px; } .music-btn { right: 30px; }
         .support-btn:hover, .music-btn:hover { transform: scale(1.1) rotate(10deg); border-color: rgba(220, 20, 60, 0.9); }
@@ -60,50 +69,46 @@
         .card-value-center { font-size: 55px; font-weight: 900; position: relative; z-index: 2; text-shadow: 3px 3px 0px rgba(0,0,0,0.4); font-style: italic; }
         .card-value-small { position: absolute; font-size: 20px; font-weight: bold; color: white; font-style: italic; text-shadow: 1px 1px 2px black; }
         .top-left { top: 4px; left: 8px; } .bottom-right { bottom: 4px; right: 8px; transform: rotate(180deg); }
+        
         .red .card-inner { background: #e74c3c; } .red .card-value-center { color: #e74c3c; }
         .blue .card-inner { background: #2980b9; } .blue .card-value-center { color: #2980b9; }
         .green .card-inner { background: #27ae60; } .green .card-value-center { color: #27ae60; }
         .yellow .card-inner { background: #f39c12; } .yellow .card-value-center { color: #f39c12; }
         .wild .card-inner { background: #111; } .wild .card-oval { background: conic-gradient(#e74c3c 90deg, #2980b9 90deg 180deg, #27ae60 180deg 270deg, #f39c12 270deg); } .wild .card-value-center { color: white; text-shadow: 2px 2px 4px black; }
         .card-back { background: #111; border: 4px solid white; color: #e74c3c; font-size: 32px; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 12px; width: 120px; height: 180px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic; flex-shrink: 0; }
+        
         .status-text { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 22px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10; white-space: nowrap; }
+        
+        /* Aktif Renk Bildirim Kutusu */
+        #active-color-box { position: absolute; right: 20px; top: 20px; padding: 12px 25px; border-radius: 15px; font-size: 20px; font-weight: bold; border: 2px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.8); transition: 0.3s; z-index: 10; display: none; }
 
-        /* ======================================================== */
-        /* === TELEFONLAR İÇİN ÖZEL UYARLAMA (RESPONSIVE TASARIM) === */
-        /* ======================================================== */
         @media screen and (max-width: 768px) {
-            /* Başlıkları ve Kutuları Telefondan Taşırmamak İçin Küçült */
             h1.title { font-size: 45px !important; margin-bottom: 10px; }
             .menu-btn { width: 85vw !important; padding: 12px 20px !important; font-size: 18px !important; }
             #global-player-name { width: 85vw !important; font-size: 18px !important; padding: 12px !important; }
             .large-panel { width: 95vw !important; height: 90vh !important; padding: 15px !important; border-width: 2px !important; }
             .panel-box { width: 90vw !important; padding: 20px !important; }
             
-            /* Sol Üst Çıkış ve Sağ/Sol Alt Ses/Destek Butonlarını Küçült */
-            .circle-back-btn { width: 45px !important; height: 45px !important; font-size: 20px !important; top: 10px !important; left: 10px !important; border-width: 2px !important; }
+            .circle-back-btn { width: 45px !important; height: 45px !important; font-size: 20px !important; left: 10px !important; border-width: 2px !important; }
             .support-btn, .music-btn { width: 45px !important; height: 45px !important; font-size: 22px !important; bottom: 15px !important; }
             .support-btn { left: 15px !important; } .music-btn { right: 15px !important; }
             
-            /* Oyun İçi Bildirimleri ve Yazıları Ekrana Sığdır */
             .status-text { font-size: 16px !important; padding: 5px 15px !important; top: 10px !important; }
+            #active-color-box { font-size: 14px !important; padding: 8px 15px !important; top: 10px !important; right: 10px !important; }
+
             #my-player-name, #opponent-name { font-size: 16px !important; }
             .user-avatar { width: 35px !important; height: 35px !important; margin-right: 5px !important; border-width: 2px !important; }
             .user-avatar svg { width: 20px !important; height: 20px !important; }
             
-            /* Kartları Telefon Ekranına Uygun Hale Getir */
             .card { width: 70px !important; height: 105px !important; margin-left: -15px !important; border-width: 2px !important; }
             .card:hover { transform: translateY(-10px) scale(1.05) !important; margin-left: 2px !important; margin-right: 2px !important; }
             .card-back { width: 70px !important; height: 105px !important; font-size: 18px !important; border-width: 2px !important; }
             .card-value-center { font-size: 32px !important; }
             .card-value-small { font-size: 12px !important; }
             
-            /* Ortadaki Kart Çekme ve Atma Alanını Birbirine Yaklaştır */
             .center-area { gap: 15px !important; }
-            
-            /* Kartların ekrandan taşmasını engellemek için kaydırma alanı düzeltmesi */
             .player-area { gap: -15px !important; padding: 10px !important; overflow-x: auto; -webkit-overflow-scrolling: touch; }
             
-            /* Uyarı (Alert) Pencerelerini Telefondan Taşırmama */
             .support-box { width: 90vw !important; padding: 25px !important; }
             #custom-alert-title, #confirm-text { font-size: 22px !important; }
             #custom-alert-text { font-size: 16px !important; }
@@ -119,6 +124,7 @@
     <div class="music-btn" id="music-toggle" onclick="toggleMusic(); playClick()">🔇</div>
     <div class="support-btn" onclick="openSupport(); playClick()">🎧</div>
 
+    <!-- ÖZEL MODALLAR (BİLDİRİM, ÇIKIŞ, DESTEK, ŞİFRE) -->
     <div class="modal-overlay" id="custom-alert-modal" style="z-index: 20000;">
         <div class="support-box" style="border-color: #ff5555; width: 450px;">
             <h2 id="custom-alert-title" style="color: #ff5555; font-size: 32px; margin-bottom: 15px;">Uyarı</h2>
@@ -157,6 +163,30 @@
         </div>
     </div>
 
+    <!-- RENK SEÇİM (JOKER) MODALI -->
+    <div class="modal-overlay" id="color-picker-modal" style="z-index: 21000;">
+        <div class="support-box" style="width: 350px;">
+            <h2 style="color: white; font-size: 28px; margin-bottom: 20px;">Rengi Belirle</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                <button class="menu-btn" style="width: 45%; background: #e74c3c; border-color: white; margin: 0; padding: 15px 5px;" onclick="selectWildColor('red')">Kırmızı</button>
+                <button class="menu-btn" style="width: 45%; background: #2980b9; border-color: white; margin: 0; padding: 15px 5px;" onclick="selectWildColor('blue')">Mavi</button>
+                <button class="menu-btn" style="width: 45%; background: #27ae60; border-color: white; margin: 0; padding: 15px 5px;" onclick="selectWildColor('green')">Yeşil</button>
+                <button class="menu-btn" style="width: 45%; background: #f39c12; border-color: white; margin: 0; padding: 15px 5px;" onclick="selectWildColor('yellow')">Sarı</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OYUN İÇİ AYARLAR MODALI -->
+    <div class="modal-overlay" id="ingame-settings-modal" style="z-index: 20500;">
+        <div class="support-box">
+            <h2 style="color: white; font-size: 30px; margin-bottom: 20px;">Oyun Arka Planı</h2>
+            <button class="menu-btn" style="width: 100%; margin-bottom: 10px;" onclick="setGameBackground('normal')">Karanlık Mod (Normal)</button>
+            <button class="menu-btn" style="width: 100%; margin-bottom: 20px;" onclick="setGameBackground('blur')">Manzara (Buzlu Cam)</button>
+            <button class="menu-btn" style="width: auto; padding: 10px 40px; background: rgba(139,0,0,0.8);" onclick="closeInGameSettings()">Kapat</button>
+        </div>
+    </div>
+
+    <!-- ANA MENÜ VE DİĞER EKRANLAR -->
     <div id="main-menu" class="screen active-screen">
         <h1 class="title">UNO ONLINE</h1>
         <input type="text" id="global-player-name" class="global-input" placeholder="Oyuncu İsminiz...">
@@ -192,7 +222,7 @@
     </div>
 
     <div id="waiting-room-screen" class="screen">
-        <button class="circle-back-btn" onclick="leaveWaitingRoom()">❮</button>
+        <button class="circle-back-btn" style="top: 30px;" onclick="leaveWaitingRoom()">❮</button>
         <h1 class="title" id="waiting-room-title" style="font-size: 50px;">Oda Adı</h1>
         <div class="panel-box" style="width: 100%; max-width: 600px;">
             <h3 style="font-size: 24px; color: #aaa; margin-bottom: 20px;">Oyuncular (<span id="waiting-player-count">1</span>/4)</h3>
@@ -220,8 +250,12 @@
         </div>
     </div>
 
+    <!-- OYUN EKRANI -->
     <div id="game-screen" class="screen">
         <div class="status-text" id="game-status">Oyun Başlıyor...</div>
+        
+        <!-- Aktif Renk Göstergesi -->
+        <div id="active-color-box">Renk: Bekleniyor</div>
         
         <div class="opponent-area" id="opponent-area">
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
@@ -245,7 +279,8 @@
             <div class="player-area" id="player-hand-ui"></div>
         </div>
         
-        <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="customConfirm('Oyundan çıkmak istediğinize emin misiniz?', () => leaveGame())">❮</button>
+        <button class="circle-back-btn" style="top: 20px;" onclick="customConfirm('Oyundan çıkmak istediğinize emin misiniz?', () => leaveGame())">❮</button>
+        <button class="circle-back-btn" id="ingame-setting-btn" style="top: 95px;" onclick="openInGameSettings()">⚙️</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -260,6 +295,17 @@
 
         function openSupport() { document.getElementById('support-modal').style.display = 'flex'; }
         function closeSupport() { document.getElementById('support-modal').style.display = 'none'; try{playClick();}catch(e){} }
+
+        // OYUN İÇİ AYARLAR FONKSİYONLARI
+        function openInGameSettings() { playClick(); document.getElementById('ingame-settings-modal').style.display = 'flex'; }
+        function closeInGameSettings() { playClick(); document.getElementById('ingame-settings-modal').style.display = 'none'; }
+        function setGameBackground(type) {
+            playClick();
+            const gameScreen = document.getElementById('game-screen');
+            if(type === 'blur') { gameScreen.classList.add('bg-blur'); } 
+            else { gameScreen.classList.remove('bg-blur'); }
+            closeInGameSettings();
+        }
 
         const clickSound = document.getElementById('clickSound');
         const bgMusic = document.getElementById('bgMusic');
@@ -276,7 +322,15 @@
             currentName = nameInput; document.getElementById('my-player-name').innerText = currentName; return true;
         }
 
-        function showScreen(screenId) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); document.getElementById(screenId).classList.add('active-screen'); }
+        function showScreen(screenId) { 
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); 
+            
+            // Eğer ana ekrana veya menüye dönülüyorsa, oyun ekranının settings menüsüyle girdiği blur varsa o da aktif kalır.
+            document.getElementById(screenId).classList.add('active-screen'); 
+            
+            // Eğer oyun dışına çıkılıyorsa blur sıfırlanır
+            if(screenId !== 'game-screen') document.getElementById('game-screen').classList.remove('bg-blur');
+        }
         
         function openLobby() {
             if(!checkAndSavePlayerName()) return;
@@ -297,7 +351,7 @@
 
         let socket; let myRoomId = null; let amIHost = false; let tempJoinRoomId = null; let isMultiplayer = false; 
         let playerHand = []; let botHand = []; let drawDeck = []; let discardPile = []; let isPlayerTurn = true;
-        let penaltyCount = 0; 
+        let penaltyCount = 0; let pendingWildIndex = -1;
 
         if (typeof io !== 'undefined') {
             socket = io();
@@ -342,7 +396,7 @@
                 let cardVal = data.card.value;
                 if (cardVal.includes('+')) {
                     penaltyCount += parseInt(cardVal.replace('+', ''));
-                } else { penaltyCount = 0; }
+                } else if(data.card.color !== 'wild') { penaltyCount = 0; }
                 
                 if (cardVal === 'S' || cardVal === 'R') {
                     setTurn(false); document.getElementById('game-status').innerText = "Rakip tekrar oynuyor...";
@@ -374,10 +428,7 @@
         }
 
         function triggerStartGame() { 
-            if (document.getElementById('waiting-player-count').innerText === "1") {
-                customAlert("Oyunu başlatmak için en az 2 kişi olmalıdır!", "Yetersiz Oyuncu");
-                return;
-            }
+            if (document.getElementById('waiting-player-count').innerText === "1") { customAlert("Oyunu başlatmak için en az 2 kişi olmalıdır!", "Yetersiz Oyuncu"); return; }
             if(socket && myRoomId) socket.emit('startGame', myRoomId); 
         }
         
@@ -393,9 +444,7 @@
         function leaveWaitingRoom() { customConfirm("Odayı kapatıp çıkmak ister misiniz?", () => { if(socket) socket.emit('leaveRoom', myRoomId); myRoomId = null; amIHost = false; showScreen('lobby-screen'); }); }
         
         function leaveGame() {
-            if(isMultiplayer && socket && myRoomId) {
-                socket.emit('leaveRoom', myRoomId);
-            }
+            if(isMultiplayer && socket && myRoomId) { socket.emit('leaveRoom', myRoomId); }
             myRoomId = null; amIHost = false; isMultiplayer = false; penaltyCount = 0;
             showScreen('main-menu');
         }
@@ -415,8 +464,10 @@
         }
 
         function getSymbol(val) { if (val === 'S') return '🚫'; if (val === 'R') return '🔄'; if (val === 'W') return '🌈'; return val; }
+        
         function createCardHTML(card, isAngled = false) {
-            const sym = getSymbol(card.value); const styleAngle = isAngled && card.angle ? `transform: rotate(${card.angle}deg); position: absolute; top:0; left:0;` : '';
+            const sym = getSymbol(card.value); 
+            const styleAngle = isAngled && card.angle ? `transform: rotate(${card.angle}deg); position: absolute; top:0; left:0;` : '';
             return `<div class="card ${card.color}" style="${styleAngle}"><div class="card-inner"><div class="card-oval"></div><div class="card-value-small top-left">${sym}</div><div class="card-value-center">${sym}</div><div class="card-value-small bottom-right">${sym}</div></div></div>`;
         }
 
@@ -447,19 +498,32 @@
             else { botArea.classList.add('active-turn'); document.getElementById('game-status').innerText = status; }
         }
 
+        // AKTİF RENK GÖSTERİCİ GÜNCELLEMESİ
+        function updateActiveColorUI() {
+            const top = discardPile[discardPile.length - 1];
+            const colorBox = document.getElementById('active-color-box');
+            let activeColor = top.chosenColor ? top.chosenColor : top.color;
+            
+            if(activeColor === 'red') { colorBox.style.backgroundColor = '#e74c3c'; colorBox.innerText = "Renk: Kırmızı"; colorBox.style.display = 'block'; }
+            else if(activeColor === 'blue') { colorBox.style.backgroundColor = '#2980b9'; colorBox.innerText = "Renk: Mavi"; colorBox.style.display = 'block'; }
+            else if(activeColor === 'green') { colorBox.style.backgroundColor = '#27ae60'; colorBox.innerText = "Renk: Yeşil"; colorBox.style.display = 'block'; }
+            else if(activeColor === 'yellow') { colorBox.style.backgroundColor = '#f39c12'; colorBox.innerText = "Renk: Sarı"; colorBox.style.display = 'block'; }
+            else { colorBox.style.display = 'none'; }
+        }
+
         function updateBoard() {
             const discardUI = document.getElementById('discard-pile'); discardUI.innerHTML = "";
             discardPile.forEach(c => { discardUI.innerHTML += createCardHTML(c, true); });
             
-            /* Ortadaki Kart Atma Alanını Telefonda Sığdırmak İçin Konum Düzeltmesi */
             const lastCard = discardUI.lastElementChild;
-            if (lastCard && window.innerWidth <= 768) {
-                 lastCard.style.position = "relative";
-            }
+            if (lastCard && window.innerWidth <= 768) { lastCard.style.position = "relative"; }
+
+            updateActiveColorUI(); // Rengi Sağ Üstte Göster
 
             const botCount = isMultiplayer ? parseInt(document.getElementById('bot-card-count').innerText) : botHand.length;
             const botUI = document.getElementById('bot-hand-ui'); botUI.innerHTML = "";
             for(let i=0; i<botCount; i++) { botUI.innerHTML += `<div class="card-back" style="width: 55px; height: 85px; font-size: 14px; border-width: 2px;">UNO</div>`; }
+            
             const playerUI = document.getElementById('player-hand-ui'); playerUI.innerHTML = "";
             playerHand.forEach((card, index) => {
                 const tempDiv = document.createElement('div'); tempDiv.innerHTML = createCardHTML(card);
@@ -470,8 +534,10 @@
 
         function canPlay(card) {
             const top = discardPile[discardPile.length - 1];
+            let activeColor = top.chosenColor ? top.chosenColor : top.color;
+            
             if (penaltyCount > 0) { return card.value === top.value && card.value.includes('+'); }
-            return card.color === 'wild' || card.color === top.color || card.value === top.value;
+            return card.color === 'wild' || card.color === activeColor || card.value === top.value;
         }
 
         function playCard(index) {
@@ -484,22 +550,48 @@
             }
 
             if (canPlay(card)) {
-                card.angle = Math.floor(Math.random() * 30) - 15;
-                discardPile.push(card); playerHand.splice(index, 1);
-                
-                let cardVal = card.value;
-                if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else { penaltyCount = 0; }
-                
-                updateBoard();
-                if (playerHand.length === 0) { customAlert("KAZANDIN! 🎉", "Tebrikler"); showScreen('main-menu'); return; }
-
-                if (isMultiplayer) {
-                    socket.emit('playCardMultiplayer', { roomId: myRoomId, card: card, remaining: playerHand.length });
-                    if (cardVal === 'S' || cardVal === 'R') { customAlert("Sıra tekrar sende!", "Pas Geçildi"); } else { setTurn(false); }
-                } else {
-                    if (cardVal === 'S' || cardVal === 'R') { customAlert("Sıra tekrar sende!", "Pas Geçildi"); setTurn(true); } else { setTurn(false); setTimeout(botTurn, 1200); }
+                // EĞER KART JOKER VEYA +4 İSE RENK SEÇİMİNİ AÇ VE BEKLE
+                if(card.color === 'wild') {
+                    pendingWildIndex = index;
+                    playClick();
+                    document.getElementById('color-picker-modal').style.display = 'flex';
+                    return;
                 }
+                
+                // Normal kart ise direkt oynat
+                executePlayCard(index, null);
             } else { customAlert("Bu kartı atamazsın!", "Geçersiz Hamle"); }
+        }
+
+        // KULLANICI RENK SEÇTİĞİNDE
+        function selectWildColor(color) {
+            playClick();
+            document.getElementById('color-picker-modal').style.display = 'none';
+            if (pendingWildIndex !== -1) {
+                executePlayCard(pendingWildIndex, color);
+                pendingWildIndex = -1;
+            }
+        }
+
+        function executePlayCard(index, chosenColor) {
+            const card = playerHand[index];
+            card.angle = Math.floor(Math.random() * 30) - 15;
+            if(chosenColor) card.chosenColor = chosenColor; // Rengi kaydet
+            
+            discardPile.push(card); playerHand.splice(index, 1);
+            
+            let cardVal = card.value;
+            if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else if(card.color !== 'wild') { penaltyCount = 0; }
+            
+            updateBoard();
+            if (playerHand.length === 0) { customAlert("KAZANDIN! 🎉", "Tebrikler"); showScreen('main-menu'); return; }
+
+            if (isMultiplayer) {
+                socket.emit('playCardMultiplayer', { roomId: myRoomId, card: card, remaining: playerHand.length });
+                if (cardVal === 'S' || cardVal === 'R') { customAlert("Sıra tekrar sende!", "Pas Geçildi"); } else { setTurn(false); }
+            } else {
+                if (cardVal === 'S' || cardVal === 'R') { customAlert("Sıra tekrar sende!", "Pas Geçildi"); setTurn(true); } else { setTurn(false); setTimeout(botTurn, 1200); }
+            }
         }
 
         function checkAndReshuffleDeck() {
@@ -525,10 +617,18 @@
 
             if (validCards.length > 0) {
                 const card = validCards[0]; const index = botHand.indexOf(card);
-                card.angle = Math.floor(Math.random() * 30) - 15; discardPile.push(card); botHand.splice(index, 1); played = true;
+                card.angle = Math.floor(Math.random() * 30) - 15; 
+                
+                // BOT RENK SEÇİMİ
+                if(card.color === 'wild') {
+                    const colors = ['red', 'blue', 'green', 'yellow'];
+                    card.chosenColor = colors[Math.floor(Math.random() * colors.length)];
+                }
+
+                discardPile.push(card); botHand.splice(index, 1); played = true;
                 
                 let cardVal = card.value;
-                if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else { penaltyCount = 0; }
+                if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else if(card.color !== 'wild') { penaltyCount = 0; }
 
                 if (botHand.length === 0) { customAlert("ROBOT KAZANDI! 😢", "Oyun Bitti"); showScreen('main-menu'); return; }
                 
