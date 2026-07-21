@@ -14,7 +14,6 @@
 
         .menu-btn { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(5px); border: 2px solid rgba(139, 0, 0, 0.8); color: white; padding: 15px 40px; font-size: 24px; font-weight: bold; border-radius: 30px; margin: 10px; width: 300px; transition: all 0.2s ease; box-shadow: 0 8px 15px rgba(0,0,0,0.6); }
         .menu-btn:hover { background: rgba(60, 10, 10, 0.9); border: 2px solid rgba(220, 20, 60, 1); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(139, 0, 0, 0.7); }
-
         .circle-back-btn { position: absolute; top: 30px; left: 30px; width: 60px; height: 60px; border-radius: 50%; background: rgba(20, 20, 20, 0.8); border: 3px solid rgba(139, 0, 0, 0.8); color: white; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 50; }
         .circle-back-btn:hover { background: rgba(139, 0, 0, 0.9); transform: scale(1.1); }
 
@@ -29,11 +28,9 @@
         .kick-btn { display: none; color: #ff5555; font-size: 24px; font-weight: bold; background: none; border: none; padding: 0 10px; transition: 0.2s; }
         .kick-btn:hover { transform: scale(1.3); color: #ff0000; }
         .waiting-player-item:hover .kick-btn { display: block; }
-
         .lock-group { display: flex; gap: 10px; justify-content: center; margin: 15px 0 10px 0; }
         .lock-btn { background: rgba(40,40,40,0.8); border: 2px solid #555; font-size: 24px; padding: 10px 20px; border-radius: 10px; transition: 0.3s; }
         .lock-btn.active { background: rgba(139, 0, 0, 0.8); border-color: rgba(220, 20, 60, 1); }
-
         .support-btn, .music-btn { position: fixed; bottom: 30px; width: 60px; height: 60px; background: rgba(20, 20, 20, 0.8); border: 2px solid rgba(139, 0, 0, 0.6); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 100; }
         .support-btn { left: 30px; } .music-btn { right: 30px; }
         .support-btn:hover, .music-btn:hover { transform: scale(1.1) rotate(10deg); border-color: rgba(220, 20, 60, 0.9); }
@@ -43,7 +40,6 @@
         .panel-box { background: rgba(10, 10, 10, 0.8); padding: 40px; border-radius: 20px; width: 450px; text-align: center; border: 2px solid rgba(139, 0, 0, 0.5); backdrop-filter: blur(8px); }
         .setting-group { margin-bottom: 25px; text-align: left; }
         .setting-group label { display: block; margin-bottom: 10px; font-size: 18px; color: #ddd;}
-        
         .global-input, .setting-group input[type="text"], .setting-group input[type="number"], .setting-group input[type="range"], #room-password, #join-password { width: 100%; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(139,0,0,0.5); padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 5px; text-align: center; }
         #global-player-name { width: 300px; margin-bottom: 20px; font-size: 20px; padding: 15px; border: 2px solid rgba(220, 20, 60, 0.8); }
         #room-password { display: none; margin-bottom: 20px; }
@@ -81,7 +77,6 @@
     <div class="music-btn" id="music-toggle" onclick="toggleMusic(); playClick()">🔇</div>
     <div class="support-btn" onclick="openSupport(); playClick()">🎧</div>
 
-    <!-- OYUN İÇİ ŞIK UYARI (ALERT) SİSTEMİ -->
     <div class="modal-overlay" id="custom-alert-modal" style="z-index: 20000;">
         <div class="support-box" style="border-color: #ff5555; width: 450px;">
             <h2 id="custom-alert-title" style="color: #ff5555; font-size: 32px; margin-bottom: 15px;">Uyarı</h2>
@@ -90,7 +85,6 @@
         </div>
     </div>
 
-    <!-- OYUN İÇİ ONAY (CONFIRM) SİSTEMİ -->
     <div class="modal-overlay" id="confirm-modal" style="z-index: 20000;">
         <div class="support-box" style="border-color: #ffaa00; width: 450px;">
             <h2 style="color: #ffaa00; font-size: 32px; margin-bottom: 15px;">Çıkış</h2>
@@ -102,7 +96,6 @@
         </div>
     </div>
 
-    <!-- DESTEK MENÜSÜ -->
     <div class="modal-overlay" id="support-modal">
         <div class="support-box">
             <h2 style="color: #ff5555; font-size: 30px; margin-bottom: 20px;">Destek:</h2>
@@ -111,7 +104,6 @@
         </div>
     </div>
 
-    <!-- ŞİFRE MODAL -->
     <div class="modal-overlay" id="password-modal">
         <div class="support-box">
             <h2 style="color: #fff; font-size: 30px; margin-bottom: 10px;">Oda Şifresi:</h2>
@@ -123,7 +115,6 @@
         </div>
     </div>
 
-    <!-- 1. ANA MENÜ (İSİM GİRME ZORUNLU) -->
     <div id="main-menu" class="screen active-screen">
         <h1 class="title">UNO ONLINE</h1>
         <input type="text" id="global-player-name" class="global-input" placeholder="Oyuncu İsminiz...">
@@ -132,7 +123,6 @@
         <button class="menu-btn" onclick="showScreen('settings-menu')">Ayarlar</button>
     </div>
 
-    <!-- 2. LOBİ EKRANI -->
     <div id="lobby-screen" class="screen">
         <div class="large-panel">
             <h1 class="title" style="font-size: 40px; margin-bottom: 10px;">Açık Odalar</h1>
@@ -140,20 +130,14 @@
                 <button class="menu-btn" style="width: 48%; background: rgba(139,0,0,0.4); margin:0;" onclick="showScreen('main-menu')">Geri Dön</button>
                 <button class="menu-btn" style="width: 48%; margin:0;" onclick="goToCreateRoom()">Oda Kur</button>
             </div>
-            <div class="room-list-container" id="room-list-ui">
-                <p style="color: #aaa; text-align: center; margin-top: 20px;">Açık oda bulunamadı...</p>
-            </div>
+            <div class="room-list-container" id="room-list-ui"><p style="color: #aaa; text-align: center; margin-top: 20px;">Açık oda bulunamadı...</p></div>
         </div>
     </div>
 
-    <!-- 3. ODA KURMA PANELİ -->
     <div id="create-room-screen" class="screen">
         <h1 class="title" style="font-size: 50px;">Oda Ayarları</h1>
         <div class="panel-box">
-            <div class="setting-group">
-                <label>Oda Adı:</label>
-                <input type="text" id="room-name-input" placeholder="Odanın adını girin...">
-            </div>
+            <div class="setting-group"><label>Oda Adı:</label><input type="text" id="room-name-input" placeholder="Odanın adını girin..."></div>
             <label style="color:#ddd; font-size:18px;">Oda Gizliliği:</label>
             <div class="lock-group">
                 <div class="lock-btn active" id="btn-unlock" onclick="setLock(false)">🔓 Açık</div>
@@ -165,7 +149,6 @@
         </div>
     </div>
 
-    <!-- BEKLEME ODASI -->
     <div id="waiting-room-screen" class="screen">
         <button class="circle-back-btn" onclick="leaveWaitingRoom()">❮</button>
         <h1 class="title" id="waiting-room-title" style="font-size: 50px;">Oda Adı</h1>
@@ -177,44 +160,30 @@
         </div>
     </div>
 
-    <!-- 4. AYARLAR -->
     <div id="settings-menu" class="screen">
         <h1 class="title" style="font-size: 50px;">Ayarlar</h1>
         <div class="panel-box">
             <button class="menu-btn" style="width: 100%; margin-bottom: 20px;" onclick="showScreen('audio-settings-screen')">Ses Ayarları 🔊</button>
-            <div class="setting-group">
-                <label>Renk Sıcaklığı (Gece Modu)</label>
-                <input type="range" min="0" max="50" value="0" oninput="changeTemp(this.value)">
-            </div>
+            <div class="setting-group"><label>Renk Sıcaklığı (Gece Modu)</label><input type="range" min="0" max="50" value="0" oninput="changeTemp(this.value)"></div>
             <button class="menu-btn" style="width: 100%; margin: 0; background: rgba(139,0,0,0.4);" onclick="showScreen('main-menu')">Geri Dön</button>
         </div>
     </div>
 
-    <!-- 4.1 SES AYARLARI -->
     <div id="audio-settings-screen" class="screen">
         <h1 class="title" style="font-size: 40px;">Ses Ayarları</h1>
         <div class="panel-box">
-            <div class="setting-group">
-                <label>Müzik Sesi</label>
-                <input type="range" min="0" max="100" value="40" oninput="document.getElementById('bgMusic').volume = this.value/100;">
-            </div>
-            <div class="setting-group">
-                <label>Efekt ve Tıklama Sesi</label>
-                <input type="range" min="0" max="100" value="100" oninput="document.getElementById('clickSound').volume = this.value/100;">
-            </div>
+            <div class="setting-group"><label>Müzik Sesi</label><input type="range" min="0" max="100" value="40" oninput="document.getElementById('bgMusic').volume = this.value/100;"></div>
+            <div class="setting-group"><label>Efekt ve Tıklama Sesi</label><input type="range" min="0" max="100" value="100" oninput="document.getElementById('clickSound').volume = this.value/100;"></div>
             <button class="menu-btn" style="width: 100%; margin: 0; background: rgba(139,0,0,0.4);" onclick="showScreen('settings-menu')">Geri Dön</button>
         </div>
     </div>
 
-    <!-- 5. OYUN EKRANI -->
     <div id="game-screen" class="screen">
         <div class="status-text" id="game-status">Oyun Başlıyor...</div>
         
         <div class="opponent-area" id="opponent-area">
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-                <div class="user-avatar" id="opponent-avatar-border">
-                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </div>
+                <div class="user-avatar" id="opponent-avatar-border"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
                 <span id="opponent-name" style="font-weight: bold; font-size: 22px; text-shadow: 2px 2px 4px black;">Bekleniyor...</span>
                 <span style="font-size: 18px; margin-left: 10px; color: #ffeb3b;">(Kalan: <span id="bot-card-count">7</span>)</span>
             </div>
@@ -228,179 +197,121 @@
 
         <div class="my-player-wrapper" id="my-player-wrapper">
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-                <div class="user-avatar" id="my-avatar-border">
-                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </div>
+                <div class="user-avatar" id="my-avatar-border"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
                 <span id="my-player-name" style="font-weight: bold; font-size: 22px; text-shadow: 2px 2px 4px black;">Oyuncu</span>
             </div>
             <div class="player-area" id="player-hand-ui"></div>
         </div>
         
-        <!-- Oyun İçi Çıkış Butonu Modal İle Korundu -->
         <button class="circle-back-btn" style="top: 20px; left: 20px;" onclick="customConfirm('Oyundan çıkmak istediğinize emin misiniz?', () => showScreen('main-menu'))">❮</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // --- ÖZEL BİLDİRİM VE ONAY SİSTEMLERİ ---
-        function customAlert(msg, title = "Uyarı") {
-            document.getElementById('custom-alert-title').innerText = title;
-            document.getElementById('custom-alert-text').innerText = msg;
-            document.getElementById('custom-alert-modal').style.display = 'flex';
-            try { playClick(); } catch(e){}
-        }
-        function closeCustomAlert() {
-            document.getElementById('custom-alert-modal').style.display = 'none';
-            try { playClick(); } catch(e){}
-        }
+        function customAlert(msg, title = "Uyarı") { document.getElementById('custom-alert-title').innerText = title; document.getElementById('custom-alert-text').innerText = msg; document.getElementById('custom-alert-modal').style.display = 'flex'; try { playClick(); } catch(e){} }
+        function closeCustomAlert() { document.getElementById('custom-alert-modal').style.display = 'none'; try { playClick(); } catch(e){} }
 
         let confirmAction = null;
-        function customConfirm(msg, onConfirm) {
-            document.getElementById('confirm-text').innerText = msg;
-            confirmAction = onConfirm;
-            document.getElementById('confirm-modal').style.display = 'flex';
-            try { playClick(); } catch(e){}
-        }
-        function closeConfirmModal() {
-            document.getElementById('confirm-modal').style.display = 'none';
-            confirmAction = null;
-            try { playClick(); } catch(e){}
-        }
-        function executeConfirm() {
-            document.getElementById('confirm-modal').style.display = 'none';
-            if(confirmAction) confirmAction();
-            try { playClick(); } catch(e){}
-        }
+        function customConfirm(msg, onConfirm) { document.getElementById('confirm-text').innerText = msg; confirmAction = onConfirm; document.getElementById('confirm-modal').style.display = 'flex'; try { playClick(); } catch(e){} }
+        function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; confirmAction = null; try { playClick(); } catch(e){} }
+        function executeConfirm() { document.getElementById('confirm-modal').style.display = 'none'; if(confirmAction) confirmAction(); try { playClick(); } catch(e){} }
 
         function openSupport() { document.getElementById('support-modal').style.display = 'flex'; }
         function closeSupport() { document.getElementById('support-modal').style.display = 'none'; try{playClick();}catch(e){} }
 
         const clickSound = document.getElementById('clickSound');
         const bgMusic = document.getElementById('bgMusic');
-        let musicPlaying = false;
-        bgMusic.volume = 0.4;
-
+        let musicPlaying = false; bgMusic.volume = 0.4;
         bgMusic.onended = function() { setTimeout(() => { if(musicPlaying) { bgMusic.play(); } }, 4000); };
         function playClick() { if(clickSound.readyState >= 2) { clickSound.currentTime = 0; clickSound.play(); } }
+        document.querySelectorAll('button, .menu-btn, .lock-btn, input, .circle-back-btn').forEach(btn => { btn.addEventListener('click', playClick); });
+        function toggleMusic() { const musicBtn = document.getElementById('music-toggle'); if (musicPlaying) { bgMusic.pause(); musicPlaying = false; musicBtn.innerText = '🔇'; } else { bgMusic.play(); musicPlaying = true; musicBtn.innerText = '🎵'; } }
 
-        document.querySelectorAll('button, .menu-btn, .lock-btn, input, .circle-back-btn').forEach(btn => {
-            btn.addEventListener('click', playClick);
-        });
-
-        function toggleMusic() {
-            const musicBtn = document.getElementById('music-toggle');
-            if (musicPlaying) { bgMusic.pause(); musicPlaying = false; musicBtn.innerText = '🔇'; } 
-            else { bgMusic.play(); musicPlaying = true; musicBtn.innerText = '🎵'; }
-        }
-
-        // --- ZORUNLU İSİM SİSTEMİ ---
         let currentName = ""; 
         function checkAndSavePlayerName() {
             const nameInput = document.getElementById('global-player-name').value.trim();
-            if(nameInput === "") {
-                customAlert("Oyuna başlamadan veya oda kurmadan önce lütfen bir İsim girin!", "İsim Gerekli");
-                return false;
-            }
-            currentName = nameInput;
-            document.getElementById('my-player-name').innerText = currentName;
-            return true;
+            if(nameInput === "") { customAlert("Oyuna başlamadan veya oda kurmadan önce lütfen bir İsim girin!", "İsim Gerekli"); return false; }
+            currentName = nameInput; document.getElementById('my-player-name').innerText = currentName; return true;
         }
 
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            document.getElementById(screenId).classList.add('active-screen');
-        }
-
-        function goToCreateRoom() {
-            if(!checkAndSavePlayerName()) return;
-            document.getElementById('room-name-input').value = currentName + "'in Odası";
-            showScreen('create-room-screen');
-        }
-
+        function showScreen(screenId) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); document.getElementById(screenId).classList.add('active-screen'); }
+        function goToCreateRoom() { if(!checkAndSavePlayerName()) return; document.getElementById('room-name-input').value = currentName + "'in Odası"; showScreen('create-room-screen'); }
+        
         let isRoomLocked = false;
         function setLock(state) {
-            isRoomLocked = state;
-            document.getElementById('btn-unlock').classList.remove('active');
-            document.getElementById('btn-lock').classList.remove('active');
+            isRoomLocked = state; document.getElementById('btn-unlock').classList.remove('active'); document.getElementById('btn-lock').classList.remove('active');
             const passInput = document.getElementById('room-password');
             if(state) { document.getElementById('btn-lock').classList.add('active'); passInput.style.display = 'block'; } 
             else { document.getElementById('btn-unlock').classList.add('active'); passInput.style.display = 'none'; passInput.value = ''; }
         }
         function changeTemp(value) { document.documentElement.style.setProperty('--color-temp', value / 100); }
 
-        // --- MULTIPLAYER SİSTEMİ ---
-        let socket;
-        let myRoomId = null;
-        let amIHost = false;
-        let tempJoinRoomId = null;
-        let isMultiplayer = false; 
+        let socket; let myRoomId = null; let amIHost = false; let tempJoinRoomId = null; let isMultiplayer = false; 
+
+        // OYUN MOTORU DEĞİŞKENLERİ
+        let playerHand = []; let botHand = []; let drawDeck = []; let discardPile = []; let isPlayerTurn = true;
+        let penaltyCount = 0; // Katlanarak Büyüyen Ceza Kartı (Katlama Mekaniği)
 
         if (typeof io !== 'undefined') {
             socket = io();
             
             socket.on('updateRoomList', (rooms) => {
-                const listUI = document.getElementById('room-list-ui');
-                listUI.innerHTML = "";
+                const listUI = document.getElementById('room-list-ui'); listUI.innerHTML = "";
                 const roomKeys = Object.keys(rooms);
-                if(roomKeys.length === 0) {
-                    listUI.innerHTML = '<p style="color: #aaa; text-align: center; margin-top: 20px;">Açık oda bulunamadı...</p>';
-                    return;
-                }
+                if(roomKeys.length === 0) { listUI.innerHTML = '<p style="color: #aaa; text-align: center; margin-top: 20px;">Açık oda bulunamadı...</p>'; return; }
                 roomKeys.forEach(key => {
-                    const room = rooms[key];
-                    const lockIcon = room.isLocked ? '🔒' : '🔓';
-                    listUI.innerHTML += `
-                        <div class="room-item">
-                            <span style="font-size: 22px; font-weight: bold;">
-                                ${lockIcon} ${room.name} <span style="color: #ffeb3b; font-size: 18px;">(${room.players.length}/${room.maxPlayers})</span>
-                            </span>
-                            <button class="menu-btn" style="width: auto; padding: 10px 20px; margin: 0; font-size: 16px;" onclick="attemptJoin('${room.id}', ${room.isLocked})">Katıl</button>
-                        </div>
-                    `;
+                    const room = rooms[key]; const lockIcon = room.isLocked ? '🔒' : '🔓';
+                    listUI.innerHTML += `<div class="room-item"><span style="font-size: 22px; font-weight: bold;">${lockIcon} ${room.name} <span style="color: #ffeb3b; font-size: 18px;">(${room.players.length}/${room.maxPlayers})</span></span><button class="menu-btn" style="width: auto; padding: 10px 20px; margin: 0; font-size: 16px;" onclick="attemptJoin('${room.id}', ${room.isLocked})">Katıl</button></div>`;
                 });
             });
 
-            socket.on('roomJoined', (data) => {
-                myRoomId = data.room.id;
-                amIHost = data.isHost;
-                showScreen('waiting-room-screen');
-                closePasswordModal();
-                updateWaitingRoomUI(data.room);
+            socket.on('roomJoined', (data) => { myRoomId = data.room.id; amIHost = data.isHost; showScreen('waiting-room-screen'); closePasswordModal(); updateWaitingRoomUI(data.room); });
+            socket.on('updateWaitingRoom', (room) => { updateWaitingRoomUI(room); });
+
+            // RAKİP OYUNDAN ÇIKTIĞINDA
+            socket.on('opponentLeft', (msg) => {
+                customAlert(msg, "Oyun Bitti");
+                myRoomId = null; amIHost = false; isMultiplayer = false; penaltyCount = 0;
+                showScreen('main-menu');
             });
 
-            socket.on('updateWaitingRoom', (room) => {
-                updateWaitingRoomUI(room);
-            });
-
-            // MULTIPLAYER OYUN BAŞLADIĞINDA ÇALIŞAN KOD
             socket.on('gameStartedMultiplayer', (room) => {
-                isMultiplayer = true;
-                showScreen('game-screen');
-                
+                isMultiplayer = true; penaltyCount = 0; showScreen('game-screen');
                 const me = room.players.find(p => p.id === socket.id);
-                playerHand = me.hand;
-                discardPile = room.discardPile;
-
+                playerHand = me.hand; discardPile = room.discardPile;
                 const opponent = room.players.find(p => p.id !== socket.id);
                 if(opponent) {
                     document.getElementById('opponent-name').innerText = opponent.name;
                     document.getElementById('bot-card-count').innerText = opponent.hand.length;
                     document.getElementById('opponent-avatar-border').style.borderColor = opponent.avatarColor;
                 }
-                
                 document.getElementById('my-avatar-border').style.borderColor = me.avatarColor;
-                
-                // Kurucu ilk başlar
-                setTurn(room.players[0].id === socket.id);
-                updateBoard();
+                setTurn(room.players[0].id === socket.id); updateBoard();
             });
 
-            // KARŞI TARAF KART ATTIĞINDA SENDE GÖZÜKMESİ
             socket.on('cardPlayed', (data) => {
                 discardPile.push(data.card);
                 document.getElementById('bot-card-count').innerText = data.remaining;
-                setTurn(true); 
+                
+                let cardVal = data.card.value;
+                if (cardVal.includes('+')) {
+                    penaltyCount += parseInt(cardVal.replace('+', ''));
+                } else { penaltyCount = 0; }
+                
+                if (cardVal === 'S' || cardVal === 'R') {
+                    setTurn(false); document.getElementById('game-status').innerText = "Rakip tekrar oynuyor...";
+                } else { setTurn(true); }
                 updateBoard();
+            });
+
+            socket.on('cardsDrawn', (cards) => {
+                playerHand.push(...cards); penaltyCount = 0; setTurn(false); updateBoard();
+            });
+
+            socket.on('opponentDrawn', (amount) => {
+                const countEl = document.getElementById('bot-card-count');
+                countEl.innerText = parseInt(countEl.innerText) + amount;
+                penaltyCount = 0; setTurn(true); updateBoard();
             });
 
             socket.on('roomClosed', () => { customAlert("Kurucu odayı kapattı!", "Oda Kapandı"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
@@ -410,168 +321,89 @@
 
         function createRoom() {
             if(!checkAndSavePlayerName()) return;
-            const roomName = document.getElementById('room-name-input').value.trim();
-            const roomPass = document.getElementById('room-password').value.trim();
+            const roomName = document.getElementById('room-name-input').value.trim(); const roomPass = document.getElementById('room-password').value.trim();
             if(roomName === "") { customAlert("Lütfen bir oda adı giriniz!"); return; }
             if(isRoomLocked && roomPass === "") { customAlert("Kilitli odalar için şifre belirlemelisiniz!"); return; }
-            if(socket && socket.connected) {
-                socket.emit('createRoom', { name: roomName, maxPlayers: 4, isLocked: isRoomLocked, password: roomPass, hostName: currentName });
-            } else { customAlert("Sunucuya bağlanılamadı!", "Hata"); }
+            if(socket && socket.connected) { socket.emit('createRoom', { name: roomName, maxPlayers: 4, isLocked: isRoomLocked, password: roomPass, hostName: currentName }); } else { customAlert("Sunucuya bağlanılamadı!", "Hata"); }
         }
 
-        function triggerStartGame() {
-            if(socket && myRoomId) { socket.emit('startGame', myRoomId); }
-        }
-
+        function triggerStartGame() { if(socket && myRoomId) socket.emit('startGame', myRoomId); }
         function attemptJoin(roomId, isLocked) {
             if(!checkAndSavePlayerName()) return;
             tempJoinRoomId = roomId;
-            if(isLocked) {
-                document.getElementById('password-modal').style.display = 'flex';
-                document.getElementById('join-password').value = "";
-            } else {
-                socket.emit('joinRoom', { roomId: roomId, password: "", playerName: currentName });
-            }
+            if(isLocked) { document.getElementById('password-modal').style.display = 'flex'; document.getElementById('join-password').value = ""; } 
+            else { socket.emit('joinRoom', { roomId: roomId, password: "", playerName: currentName }); }
         }
-
         function closePasswordModal() { try{playClick();}catch(e){} document.getElementById('password-modal').style.display = 'none'; }
-        function submitPassword() {
-            try{playClick();}catch(e){}
-            const pass = document.getElementById('join-password').value;
-            socket.emit('joinRoom', { roomId: tempJoinRoomId, password: pass, playerName: currentName });
-        }
+        function submitPassword() { try{playClick();}catch(e){} const pass = document.getElementById('join-password').value; socket.emit('joinRoom', { roomId: tempJoinRoomId, password: pass, playerName: currentName }); }
 
-        function leaveWaitingRoom() {
-            customConfirm("Odayı kapatıp çıkmak ister misiniz?", () => {
-                if(socket) socket.emit('leaveRoom', myRoomId);
-                myRoomId = null; amIHost = false;
-                showScreen('lobby-screen');
-            });
-        }
-
-        function kickPlayer(playerId) {
-            if(amIHost) socket.emit('kickPlayer', { roomId: myRoomId, playerId: playerId });
-        }
+        function leaveWaitingRoom() { customConfirm("Odayı kapatıp çıkmak ister misiniz?", () => { if(socket) socket.emit('leaveRoom', myRoomId); myRoomId = null; amIHost = false; showScreen('lobby-screen'); }); }
+        function kickPlayer(playerId) { if(amIHost) socket.emit('kickPlayer', { roomId: myRoomId, playerId: playerId }); }
 
         function updateWaitingRoomUI(room) {
-            document.getElementById('waiting-room-title').innerText = room.name;
-            document.getElementById('waiting-player-count').innerText = room.players.length;
-            const listUI = document.getElementById('waiting-player-list');
-            listUI.innerHTML = "";
-            
+            document.getElementById('waiting-room-title').innerText = room.name; document.getElementById('waiting-player-count').innerText = room.players.length;
+            const listUI = document.getElementById('waiting-player-list'); listUI.innerHTML = "";
             room.players.forEach(p => {
-                let kickHtml = "";
-                if(amIHost && p.id !== socket.id) { kickHtml = `<button class="kick-btn" onclick="kickPlayer('${p.id}')">✖</button>`; }
+                let kickHtml = ""; if(amIHost && p.id !== socket.id) { kickHtml = `<button class="kick-btn" onclick="kickPlayer('${p.id}')">✖</button>`; }
                 let icon = (p.id === room.hostId) ? '👑' : '👤';
-                listUI.innerHTML += `
-                    <div class="waiting-player-item">
-                        <div style="display: flex; align-items: center;">
-                            <div class="user-avatar" style="border-color: ${p.avatarColor}; margin-right: 15px;">
-                                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                            </div>
-                            <span>${icon} ${p.name}</span>
-                        </div>
-                        ${kickHtml}
-                    </div>
-                `;
+                listUI.innerHTML += `<div class="waiting-player-item"><div style="display: flex; align-items: center;"><div class="user-avatar" style="border-color: ${p.avatarColor}; margin-right: 15px;"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><span>${icon} ${p.name}</span></div>${kickHtml}</div>`;
             });
-
-            const startBtn = document.getElementById('start-game-btn');
-            const statusText = document.getElementById('waiting-status');
-            if(amIHost) { startBtn.style.display = 'block'; statusText.style.display = 'none'; } 
-            else { startBtn.style.display = 'none'; statusText.style.display = 'block'; }
+            const startBtn = document.getElementById('start-game-btn'); const statusText = document.getElementById('waiting-status');
+            if(amIHost) { startBtn.style.display = 'block'; statusText.style.display = 'none'; } else { startBtn.style.display = 'none'; statusText.style.display = 'block'; }
         }
 
-        // --- OYUN MOTORU (Gerçek Deste) ---
-        let playerHand = [];
-        let botHand = [];
-        let drawDeck = [];
-        let discardPile = [];
-        let isPlayerTurn = true;
-
-        function getSymbol(val) {
-            if (val === 'S') return '🚫'; 
-            if (val === 'R') return '🔄'; 
-            if (val === 'W') return '🌈'; 
-            return val;
-        }
-
+        // --- UNO KURALLARI VE KATLAMA MOTORU ---
+        function getSymbol(val) { if (val === 'S') return '🚫'; if (val === 'R') return '🔄'; if (val === 'W') return '🌈'; return val; }
         function createCardHTML(card, isAngled = false) {
-            const sym = getSymbol(card.value);
-            const styleAngle = isAngled && card.angle ? `transform: rotate(${card.angle}deg); position: absolute; top:0; left:0;` : '';
+            const sym = getSymbol(card.value); const styleAngle = isAngled && card.angle ? `transform: rotate(${card.angle}deg); position: absolute; top:0; left:0;` : '';
             return `<div class="card ${card.color}" style="${styleAngle}"><div class="card-inner"><div class="card-oval"></div><div class="card-value-small top-left">${sym}</div><div class="card-value-center">${sym}</div><div class="card-value-small bottom-right">${sym}</div></div></div>`;
         }
 
         function generate108UnoDeck() {
-            const colors = ['red', 'blue', 'green', 'yellow'];
-            let deck = [];
-            colors.forEach(c => {
-                deck.push({ color: c, value: '0' });
-                for (let i = 1; i <= 9; i++) { deck.push({ color: c, value: i.toString() }); deck.push({ color: c, value: i.toString() }); }
-                for (let i = 0; i < 2; i++) { deck.push({ color: c, value: 'S' }); deck.push({ color: c, value: 'R' }); deck.push({ color: c, value: '+2' }); }
-            });
-            for (let i = 0; i < 4; i++) { deck.push({ color: 'wild', value: 'W' }); deck.push({ color: 'wild', value: '+4' }); }
-            return shuffle(deck);
+            const colors = ['red', 'blue', 'green', 'yellow']; let deck = [];
+            colors.forEach(c => { deck.push({ color: c, value: '0' }); for (let i = 1; i <= 9; i++) { deck.push({ color: c, value: i.toString() }); deck.push({ color: c, value: i.toString() }); } for (let i = 0; i < 2; i++) { deck.push({ color: c, value: 'S' }); deck.push({ color: c, value: 'R' }); deck.push({ color: c, value: '+2' }); } });
+            for (let i = 0; i < 4; i++) { deck.push({ color: 'wild', value: 'W' }); deck.push({ color: 'wild', value: '+4' }); } return shuffle(deck);
         }
 
-        function shuffle(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
+        function shuffle(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
 
         function startBotGame() {
-            isMultiplayer = false;
-            document.getElementById('my-avatar-border').style.borderColor = '#ff4d4d';
-            document.getElementById('opponent-avatar-border').style.borderColor = '#4d79ff';
-            document.getElementById('opponent-name').innerText = "Robot";
-            
-            drawDeck = generate108UnoDeck();
-            playerHand = drawDeck.splice(0, 7);
-            botHand = drawDeck.splice(0, 7);
-            
-            let topCard = drawDeck.pop();
-            while(topCard.color === 'wild') { drawDeck.unshift(topCard); topCard = drawDeck.pop(); }
-            topCard.angle = Math.floor(Math.random() * 26) - 13;
-            discardPile = [topCard];
-
-            showScreen('game-screen');
-            setTurn(true);
-            updateBoard();
+            isMultiplayer = false; penaltyCount = 0;
+            document.getElementById('my-avatar-border').style.borderColor = '#ff4d4d'; document.getElementById('opponent-avatar-border').style.borderColor = '#4d79ff'; document.getElementById('opponent-name').innerText = "Robot";
+            drawDeck = generate108UnoDeck(); playerHand = drawDeck.splice(0, 7); botHand = drawDeck.splice(0, 7);
+            let topCard = drawDeck.pop(); while(topCard.color === 'wild') { drawDeck.unshift(topCard); topCard = drawDeck.pop(); }
+            topCard.angle = Math.floor(Math.random() * 26) - 13; discardPile = [topCard];
+            showScreen('game-screen'); setTurn(true); updateBoard();
         }
 
         function setTurn(isPlayer) {
             isPlayerTurn = isPlayer;
-            const playerArea = document.getElementById('my-player-wrapper');
-            const botArea = document.getElementById('opponent-area');
+            const playerArea = document.getElementById('my-player-wrapper'); const botArea = document.getElementById('opponent-area');
             playerArea.classList.remove('active-turn'); botArea.classList.remove('active-turn');
-            if(isPlayer) { playerArea.classList.add('active-turn'); document.getElementById('game-status').innerText = "Senin Sırandın!"; } 
-            else { botArea.classList.add('active-turn'); document.getElementById('game-status').innerText = isMultiplayer ? "Rakip Oynuyor..." : "Sıra Robot'ta..."; }
+            
+            let status = isPlayer ? (penaltyCount > 0 ? "Cezalı durumdasın! Kartı Katla veya Çek!" : "Senin Sırandın!") : (isMultiplayer ? "Rakip Oynuyor..." : "Sıra Robot'ta...");
+            if(isPlayer) { playerArea.classList.add('active-turn'); document.getElementById('game-status').innerText = status; } 
+            else { botArea.classList.add('active-turn'); document.getElementById('game-status').innerText = status; }
         }
 
         function updateBoard() {
             const discardUI = document.getElementById('discard-pile'); discardUI.innerHTML = "";
             discardPile.forEach(c => { discardUI.innerHTML += createCardHTML(c, true); });
-
-            document.getElementById('bot-card-count').innerText = isMultiplayer ? (document.getElementById('bot-card-count').innerText) : botHand.length;
+            const botCount = isMultiplayer ? parseInt(document.getElementById('bot-card-count').innerText) : botHand.length;
             const botUI = document.getElementById('bot-hand-ui'); botUI.innerHTML = "";
-            const count = isMultiplayer ? parseInt(document.getElementById('bot-card-count').innerText) : botHand.length;
-            for(let i=0; i<count; i++) { botUI.innerHTML += `<div class="card-back" style="width: 55px; height: 85px; font-size: 14px; border-width: 2px;">UNO</div>`; }
-
+            for(let i=0; i<botCount; i++) { botUI.innerHTML += `<div class="card-back" style="width: 55px; height: 85px; font-size: 14px; border-width: 2px;">UNO</div>`; }
             const playerUI = document.getElementById('player-hand-ui'); playerUI.innerHTML = "";
             playerHand.forEach((card, index) => {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = createCardHTML(card);
-                const cardEl = tempDiv.firstElementChild;
-                cardEl.onclick = () => { playClick(); playCard(index); };
-                playerUI.appendChild(cardEl);
+                const tempDiv = document.createElement('div'); tempDiv.innerHTML = createCardHTML(card);
+                const cardEl = tempDiv.firstElementChild; cardEl.onclick = () => { playClick(); playCard(index); }; playerUI.appendChild(cardEl);
             });
+            document.getElementById('bot-card-count').innerText = botCount;
         }
 
         function canPlay(card) {
             const top = discardPile[discardPile.length - 1];
+            // EĞER ORTADA CEZA VARSA SADECE AYNI + KARTINI ATARAK KATLAYABİLİR (+2 üzerine +2, +4 üzerine +4)
+            if (penaltyCount > 0) { return card.value === top.value && card.value.includes('+'); }
             return card.color === 'wild' || card.color === top.color || card.value === top.value;
         }
 
@@ -579,68 +411,68 @@
             if (!isPlayerTurn) return;
             const card = playerHand[index];
             
+            // Eğer cezalı ise yanlış hamle yapılmasını engelle
+            if (penaltyCount > 0 && !(card.value === discardPile[discardPile.length-1].value && card.value.includes('+'))) {
+                customAlert(`Cezalı durumdasın! Sadece ${discardPile[discardPile.length-1].value} atarak cezayı katlayabilirsin veya kart ÇEK'melisin.`, "Geçersiz Hamle");
+                return;
+            }
+
             if (canPlay(card)) {
                 card.angle = Math.floor(Math.random() * 30) - 15;
-                discardPile.push(card);
-                playerHand.splice(index, 1);
-                updateBoard();
+                discardPile.push(card); playerHand.splice(index, 1);
                 
+                let cardVal = card.value;
+                if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else { penaltyCount = 0; }
+                
+                updateBoard();
                 if (playerHand.length === 0) { customAlert("KAZANDIN! 🎉", "Tebrikler"); showScreen('main-menu'); return; }
 
-                setTurn(false);
-                
-                // Eğer oyunda bir oyuncu varsa hamlesi sunucuya bildirilir
-                if(isMultiplayer) {
+                if (isMultiplayer) {
                     socket.emit('playCardMultiplayer', { roomId: myRoomId, card: card, remaining: playerHand.length });
+                    if (cardVal === 'S' || cardVal === 'R') { customAlert("Sıra tekrar sende!", "Pas Geçildi"); } else { setTurn(false); }
                 } else {
-                    if(card.value === '+2') drawCardsForBot(2);
-                    if(card.value === '+4') drawCardsForBot(4);
-                    setTimeout(() => { setTurn(true); updateBoard(); }, 1200);
-                    setTimeout(botTurn, 1200); 
+                    if (cardVal === 'S' || cardVal === 'R') { customAlert("Sıra tekrar sende!", "Pas Geçildi"); setTurn(true); } else { setTurn(false); setTimeout(botTurn, 1200); }
                 }
-            } else {
-                customAlert("Bu kartı atamazsın!", "Geçersiz Hamle");
-            }
+            } else { customAlert("Bu kartı atamazsın!", "Geçersiz Hamle"); }
         }
 
         function checkAndReshuffleDeck() {
             if (drawDeck && drawDeck.length === 0 && discardPile.length > 1) {
-                const topDiscard = discardPile.pop(); 
-                drawDeck = shuffle(discardPile.map(c => ({...c, angle: 0})));
-                discardPile = [topDiscard]; 
+                const topDiscard = discardPile.pop(); drawDeck = shuffle(discardPile.map(c => ({...c, angle: 0}))); discardPile = [topDiscard]; 
             }
         }
 
         function drawCard() {
-            if (!isPlayerTurn || isMultiplayer) return; // Multiplayera deste mekaniği sonraki adıma eklenecek, şimdilik kitli
-            checkAndReshuffleDeck();
-            playerHand.push(drawDeck.pop());
-            setTurn(false); updateBoard();
-            setTimeout(botTurn, 1200);
+            if (!isPlayerTurn) return;
+            let drawAmount = penaltyCount > 0 ? penaltyCount : 1;
+            
+            if (isMultiplayer) { socket.emit('drawCards', { roomId: myRoomId, amount: drawAmount }); } 
+            else {
+                for(let i=0; i<drawAmount; i++) { checkAndReshuffleDeck(); playerHand.push(drawDeck.pop()); }
+                penaltyCount = 0; setTurn(false); updateBoard(); setTimeout(botTurn, 1200);
+            }
         }
-
-        function drawCardsForBot(count) { for(let i=0; i<count; i++) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); } }
-        function drawCardsForPlayer(count) { for(let i=0; i<count; i++) { checkAndReshuffleDeck(); playerHand.push(drawDeck.pop()); } }
 
         function botTurn() {
             if(isMultiplayer) return;
-            let played = false;
-            for(let i=0; i<botHand.length; i++) {
-                if(canPlay(botHand[i])) {
-                    const card = botHand[i];
-                    card.angle = Math.floor(Math.random() * 30) - 15;
-                    discardPile.push(card); botHand.splice(i, 1); played = true;
-                    if (botHand.length === 0) { customAlert("ROBOT KAZANDI! 😢", "Oyun Bitti"); showScreen('main-menu'); return; }
-                    if(card.value === '+2' || card.value === 'S' || card.value === 'R' || card.value === '+4') {
-                        if(card.value === '+2') drawCardsForPlayer(2);
-                        if(card.value === '+4') drawCardsForPlayer(4);
-                        setTimeout(botTurn, 1200); updateBoard(); return;
-                    }
-                    break;
-                }
+            let played = false; let validCards = botHand.filter(c => canPlay(c));
+
+            if (validCards.length > 0) {
+                const card = validCards[0]; const index = botHand.indexOf(card);
+                card.angle = Math.floor(Math.random() * 30) - 15; discardPile.push(card); botHand.splice(index, 1); played = true;
+                
+                let cardVal = card.value;
+                if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else { penaltyCount = 0; }
+
+                if (botHand.length === 0) { customAlert("ROBOT KAZANDI! 😢", "Oyun Bitti"); showScreen('main-menu'); return; }
+                
+                if(cardVal === 'S' || cardVal === 'R') { document.getElementById('game-status').innerText = "Robot tekrar oynuyor..."; updateBoard(); setTimeout(botTurn, 1200); return; } 
+                else { setTurn(true); updateBoard(); }
+            } else {
+                let drawAmount = penaltyCount > 0 ? penaltyCount : 1;
+                for(let i=0; i<drawAmount; i++) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); }
+                penaltyCount = 0; setTurn(true); updateBoard();
             }
-            if(!played) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); }
-            setTurn(true); updateBoard();
         }
     </script>
 </body>
