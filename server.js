@@ -8,8 +8,6 @@ app.use(express.static(__dirname));
 let rooms = {}; 
 
 io.on('connection', (socket) => {
-    console.log('Bir kullanıcı bağlandı:', socket.id);
-
     // Yeni oda kurma
     socket.on('createRoom', (data) => {
         const roomId = "Oda_" + Math.floor(Math.random() * 10000);
@@ -24,7 +22,7 @@ io.on('connection', (socket) => {
         };
         socket.join(roomId);
         socket.emit('roomJoined', { room: rooms[roomId], isHost: true });
-        io.emit('updateRoomList', rooms); // Diğer herkese listeyi güncelle
+        io.emit('updateRoomList', rooms);
     });
 
     // Odaya katılma (Şifre kontrolü dahil)
@@ -47,8 +45,8 @@ io.on('connection', (socket) => {
         socket.join(room.id);
         
         socket.emit('roomJoined', { room: room, isHost: false });
-        io.to(room.id).emit('updateWaitingRoom', room); // Odadakilere yeni oyuncuyu göster
-        io.emit('updateRoomList', rooms); // Dışarıdaki listeyi güncelle
+        io.to(room.id).emit('updateWaitingRoom', room);
+        io.emit('updateRoomList', rooms);
     });
 
     // Odadan çıkma veya odayı kapatma
@@ -56,11 +54,9 @@ io.on('connection', (socket) => {
         const room = rooms[roomId];
         if (room) {
             if (room.hostId === socket.id) {
-                // Kurucu çıkarsa oda kapanır
                 io.to(roomId).emit('roomClosed');
                 delete rooms[roomId];
             } else {
-                // Sadece oyuncu çıkarsa listeden silinir
                 room.players = room.players.filter(p => p.id !== socket.id);
                 io.to(roomId).emit('updateWaitingRoom', room);
             }
@@ -69,21 +65,19 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Odadan adam atma (Kick)
+    // Odadan oyuncu atma (Kick)
     socket.on('kickPlayer', (data) => {
         const room = rooms[data.roomId];
         if (room && room.hostId === socket.id) {
             room.players = room.players.filter(p => p.id !== data.playerId);
-            io.sockets.sockets.get(data.playerId).leave(data.roomId);
-            io.to(data.playerId).emit('kicked'); // Atılan kişiye mesaj yolla
+            io.sockets.sockets.get(data.playerId)?.leave(data.roomId);
+            io.to(data.playerId).emit('kicked');
             io.to(data.roomId).emit('updateWaitingRoom', room);
             io.emit('updateRoomList', rooms);
         }
     });
 
-    // Oyuncu koptuğunda
     socket.on('disconnect', () => {
-        // Hangi odadaysa bul ve çıkar
         for (const roomId in rooms) {
             const room = rooms[roomId];
             const playerIndex = room.players.findIndex(p => p.id === socket.id);
@@ -101,7 +95,7 @@ io.on('connection', (socket) => {
     });
 });
 
-// BULUT SUNUCUSU İÇİN OTOMATİK PORT AYARI
+// Render bulut uyumlu PORT ayarı
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
     console.log(`Sunucu Başladı! PORT: ${PORT}`);
