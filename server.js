@@ -7,29 +7,25 @@ app.use(express.static(__dirname));
 
 let rooms = {};
 
-// 108 KARTLIK GERÇEK UNO DESTESİ OLUŞTURMA
 function createUnoDeck() {
     const colors = ['red', 'blue', 'green', 'yellow'];
     let deck = [];
-
     colors.forEach(color => {
-        deck.push({ color, value: '0' }); // 1 adet 0
+        deck.push({ color, value: '0' });
         for (let i = 1; i <= 9; i++) {
-            deck.push({ color, value: i.toString() }); // 2'şer adet 1-9
+            deck.push({ color, value: i.toString() });
             deck.push({ color, value: i.toString() });
         }
         for (let i = 0; i < 2; i++) {
-            deck.push({ color, value: 'S' });  // Atla (Skip)
-            deck.push({ color, value: 'R' });  // Yön Değiştir (Reverse)
-            deck.push({ color, value: '+2' }); // +2 Kartı
+            deck.push({ color, value: 'S' });
+            deck.push({ color, value: 'R' });
+            deck.push({ color, value: '+2' });
         }
     });
-
     for (let i = 0; i < 4; i++) {
-        deck.push({ color: 'wild', value: 'W' });  // Joker
-        deck.push({ color: 'wild', value: '+4' }); // +4 Joker
+        deck.push({ color: 'wild', value: 'W' });
+        deck.push({ color: 'wild', value: '+4' });
     }
-
     return shuffleDeck(deck);
 }
 
@@ -56,8 +52,6 @@ io.on('connection', (socket) => {
             players: [{ id: socket.id, name: data.hostName, avatarColor: avatarColors[0], hand: [] }],
             deck: [],
             discardPile: [],
-            currentTurn: 0,
-            direction: 1,
             isStarted: false
         };
         socket.join(roomId);
@@ -81,30 +75,30 @@ io.on('connection', (socket) => {
         io.emit('updateRoomList', rooms);
     });
 
-    // CANLI OYUNU BAŞLATMA
     socket.on('startGame', (roomId) => {
         const room = rooms[roomId];
         if (room && room.hostId === socket.id) {
             room.isStarted = true;
             room.deck = createUnoDeck();
             
-            // Her oyuncuya 7 kart dağıt
-            room.players.forEach(p => {
-                p.hand = room.deck.splice(0, 7);
-            });
+            room.players.forEach(p => { p.hand = room.deck.splice(0, 7); });
 
-            // Ortaya ilk kartı aç (Joker olmasın)
             let topCard = room.deck.pop();
             while(topCard.color === 'wild') {
                 room.deck.unshift(topCard);
                 topCard = room.deck.pop();
             }
-            topCard.angle = Math.floor(Math.random() * 30) - 15; // Hafif çapraz açı
+            topCard.angle = Math.floor(Math.random() * 30) - 15;
             room.discardPile = [topCard];
 
             io.to(roomId).emit('gameStartedMultiplayer', room);
             io.emit('updateRoomList', rooms);
         }
+    });
+
+    // OYUN İÇİ KART ATMA HAMLESİNİ DİĞER TELEFONA İLET
+    socket.on('playCardMultiplayer', (data) => {
+        socket.to(data.roomId).emit('cardPlayed', { card: data.card, remaining: data.remaining });
     });
 
     socket.on('leaveRoom', (roomId) => {
@@ -126,7 +120,8 @@ io.on('connection', (socket) => {
         const room = rooms[data.roomId];
         if (room && room.hostId === socket.id) {
             room.players = room.players.filter(p => p.id !== data.playerId);
-            io.sockets.sockets.get(data.playerId)?.leave(data.roomId);
+            const targetSocket = io.sockets.sockets.get(data.playerId);
+            if(targetSocket) targetSocket.leave(data.roomId);
             io.to(data.playerId).emit('kicked');
             io.to(data.roomId).emit('updateWaitingRoom', room);
             io.emit('updateRoomList', rooms);
