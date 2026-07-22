@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bulut UNO Online</title>
     <style>
+        /* ALTONE TRIAL BOLD FONTU */
+        @font-face {
+            font-family: 'Altone Trial Bold';
+            src: local('Altone Trial Bold'), local('AltoneTrial-Bold'), sans-serif;
+            font-weight: bold;
+        }
+
         :root { --color-temp: 0; }
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; cursor: url("png-clipart-hand-cursor-illustration-computer-mouse-pointer-cursor-icon-computer-mouse-arrow-hand-rectangle-thumbnail.png") 12 5, auto !important; }
         
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; color: white; background: url('de9fac23ab831da3e0746c6fbe2b367e.jpg') no-repeat center center fixed; background-size: cover; }
+        body { font-family: 'Altone Trial Bold', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; color: white; background: url('de9fac23ab831da3e0746c6fbe2b367e.jpg') no-repeat center center fixed; background-size: cover; font-weight: bold; }
         #screen-filter { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; background: rgba(255, 150, 0, var(--color-temp)); mix-blend-mode: overlay; z-index: 9999; }
         
         .screen { display: none; width: 100vw; height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.7); transition: backdrop-filter 0.5s; }
@@ -16,18 +23,20 @@
         
         .bg-blur { background: rgba(0, 0, 0, 0.2) !important; backdrop-filter: blur(8px); }
 
-        /* YENİ: YUMUŞAK VE HIZLI FADE-IN ANİMASYONU (0'dan 100'e Opaklık) */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
+        /* AÇILIŞ (FADE-IN) VE KAPANIŞ (FADE-OUT) ANİMASYONLARI */
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+        
         .active-screen > * { animation: fadeIn 0.15s ease-out forwards; }
+        .fade-out-element { animation: fadeOut 0.15s ease-in forwards !important; pointer-events: none; }
+        
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; }
         .modal-overlay.active-modal .support-box { animation: fadeIn 0.15s ease-out forwards; }
+        .modal-overlay .support-box.fade-out-element { animation: fadeOut 0.15s ease-in forwards !important; }
 
         h1.title { font-size: 80px; text-shadow: 4px 4px 0px rgba(0,0,0,0.9); margin-bottom: 20px; color: #fff; letter-spacing: 5px; text-align: center; }
 
-        .menu-btn { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(5px); border: 2px solid rgba(139, 0, 0, 0.8); color: white; padding: 15px 40px; font-size: 24px; font-weight: bold; border-radius: 30px; margin: 10px; width: 300px; transition: all 0.2s ease; box-shadow: 0 8px 15px rgba(0,0,0,0.6); }
+        .menu-btn { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(5px); border: 2px solid rgba(139, 0, 0, 0.8); color: white; padding: 15px 40px; font-size: 24px; font-weight: bold; border-radius: 30px; margin: 10px; width: 300px; max-width: 90vw; transition: all 0.2s ease; box-shadow: 0 8px 15px rgba(0,0,0,0.6); }
         .menu-btn:hover { background: rgba(60, 10, 10, 0.9); border: 2px solid rgba(220, 20, 60, 1); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(139, 0, 0, 0.7); }
         
         .circle-back-btn { position: absolute; left: 30px; width: 60px; height: 60px; border-radius: 50%; background: rgba(20, 20, 20, 0.8); border: 3px solid rgba(139, 0, 0, 0.8); color: white; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 50; }
@@ -37,7 +46,7 @@
         .uno-btn:hover { transform: scale(1.1) rotate(-10deg); box-shadow: 0 0 50px rgba(231, 76, 60, 1); }
         .uno-btn:active { transform: scale(0.9); }
 
-        .large-panel { background: rgba(15, 15, 15, 0.85); border: 4px solid rgba(139, 0, 0, 0.9); box-shadow: 0 0 30px rgba(139, 0, 0, 0.5); width: 80vw; height: 80vh; border-radius: 20px; padding: 30px; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
+        .large-panel { background: rgba(15, 15, 15, 0.85); border: 4px solid rgba(139, 0, 0, 0.9); box-shadow: 0 0 30px rgba(139, 0, 0, 0.5); width: 80vw; max-width: 800px; height: 80vh; border-radius: 20px; padding: 30px; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
         .room-list-container { flex: 1; background: #000; border: 2px solid rgba(139, 0, 0, 0.6); border-radius: 10px; margin-top: 20px; overflow-y: auto; padding: 15px; }
         .room-item { background: rgba(30, 30, 30, 0.8); border: 1px solid rgba(139,0,0,0.5); padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
@@ -49,20 +58,20 @@
         .kick-btn:hover { transform: scale(1.3); color: #ff0000; }
         .waiting-player-item:hover .kick-btn { display: block; }
         
-        .lock-group { display: flex; gap: 10px; justify-content: center; margin: 15px 0 10px 0; }
-        .lock-btn { background: rgba(40,40,40,0.8); border: 2px solid #555; font-size: 24px; padding: 10px 20px; border-radius: 10px; transition: 0.3s; }
+        .lock-group { display: flex; gap: 10px; justify-content: center; margin: 5px 0; }
+        .lock-btn { background: rgba(40,40,40,0.8); border: 2px solid #555; font-size: 20px; padding: 10px; width: 50px; border-radius: 10px; transition: 0.3s; text-align: center; }
         .lock-btn.active { background: rgba(139, 0, 0, 0.8); border-color: rgba(220, 20, 60, 1); }
         
         .support-btn, .music-btn { position: fixed; bottom: 30px; width: 60px; height: 60px; background: rgba(20, 20, 20, 0.8); border: 2px solid rgba(139, 0, 0, 0.6); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 100; }
         .support-btn { left: 30px; } .music-btn { right: 30px; }
         .support-btn:hover, .music-btn:hover { transform: scale(1.1) rotate(10deg); border-color: rgba(220, 20, 60, 0.9); }
 
-        .support-box { background: rgba(20, 20, 20, 0.95); padding: 40px; border-radius: 20px; text-align: center; border: 3px solid rgba(139, 0, 0, 0.8); backdrop-filter: blur(10px); }
-        .panel-box { background: rgba(10, 10, 10, 0.8); padding: 40px; border-radius: 20px; width: 450px; text-align: center; border: 2px solid rgba(139, 0, 0, 0.5); backdrop-filter: blur(8px); }
+        .support-box { background: rgba(20, 20, 20, 0.95); padding: 40px; border-radius: 20px; text-align: center; border: 3px solid rgba(139, 0, 0, 0.8); backdrop-filter: blur(10px); width: 90vw; max-width: 450px; }
+        .panel-box { background: rgba(10, 10, 10, 0.8); padding: 40px; border-radius: 20px; width: 90vw; max-width: 450px; text-align: center; border: 2px solid rgba(139, 0, 0, 0.5); backdrop-filter: blur(8px); }
         .setting-group { margin-bottom: 25px; text-align: left; }
         .setting-group label { display: block; margin-bottom: 10px; font-size: 18px; color: #ddd;}
-        .global-input, .setting-group input[type="text"], .setting-group input[type="number"], .setting-group input[type="range"], #room-password, #join-password { width: 100%; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(139,0,0,0.5); padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 5px; text-align: center; }
-        #global-player-name { width: 300px; margin-bottom: 20px; font-size: 20px; padding: 15px; border: 2px solid rgba(220, 20, 60, 0.8); }
+        .global-input, .setting-group input[type="text"], .setting-group input[type="number"], .setting-group input[type="range"], #room-password, #join-password { width: 100%; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(139,0,0,0.5); padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 5px; text-align: center; font-family: inherit; font-weight: bold; }
+        #global-player-name { width: 300px; max-width: 90vw; margin-bottom: 20px; font-size: 20px; padding: 15px; border: 2px solid rgba(220, 20, 60, 0.8); }
         #room-password { display: none; margin-bottom: 20px; }
 
         .game-board { display: flex; flex-direction: column; justify-content: space-between; height: 100vh; width: 100vw; padding: 20px; }
@@ -91,22 +100,24 @@
         
         .card-back { background: #111; border: 4px solid white; color: #e74c3c; font-size: 30px; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 12px; width: 110px; height: 165px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); font-style: italic; flex-shrink: 0; filter: brightness(1) !important; margin-left: 0 !important; }
         
-        /* BİLDİRİMLER (SAĞ ÜST KÖŞE) */
+        /* BİLDİRİMLER */
         .status-text { position: absolute; top: 20px; right: 20px; left: auto; transform: none; background: rgba(0,0,0,0.85); padding: 10px 25px; border-radius: 20px; font-size: 20px; border: 2px solid rgba(139, 0, 0, 0.8); z-index: 10; white-space: nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         #active-color-box { position: absolute; top: 75px; right: 20px; left: auto; transform: none; padding: 8px 25px; border-radius: 15px; font-size: 16px; font-weight: bold; border: 2px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.8); transition: 0.3s; z-index: 10; display: none; }
 
+        /* MOBİL UYUM DÜZELTMELERİ */
         @media screen and (max-width: 768px) {
             h1.title { font-size: 38px !important; margin-bottom: 15px; }
-            .menu-btn { width: 85vw !important; padding: 12px 20px !important; font-size: 18px !important; }
-            #global-player-name { width: 85vw !important; font-size: 18px !important; }
+            .menu-btn { width: 90vw !important; padding: 12px 20px !important; font-size: 16px !important; margin: 8px !important; }
+            #global-player-name { width: 90vw !important; font-size: 18px !important; }
             .large-panel { width: 95vw !important; height: 92vh !important; padding: 15px !important; }
-            .panel-box { width: 90vw !important; padding: 20px !important; }
-            .support-box { width: 90vw !important; padding: 25px !important; }
+            .panel-box, .support-box { width: 95vw !important; padding: 20px !important; }
             
             .circle-back-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; left: 10px !important; top: 10px !important; }
-            .support-btn, .music-btn { width: 45px !important; height: 45px !important; font-size: 22px !important; bottom: 15px !important; }
-            .support-btn { left: 15px !important; } .music-btn { right: 15px !important; }
-            .uno-btn { width: 70px !important; height: 70px !important; font-size: 16px !important; right: 10px !important; bottom: 80px !important; border-width: 3px !important; }
+            .support-btn, .music-btn { width: 40px !important; height: 40px !important; font-size: 20px !important; bottom: 10px !important; }
+            .support-btn { left: 10px !important; } .music-btn { right: 10px !important; }
+            
+            /* UNO Butonu Kartlara Çarpmasın Diye Yukarı Alındı */
+            .uno-btn { width: 70px !important; height: 70px !important; font-size: 18px !important; right: 10px !important; bottom: 120px !important; border-width: 3px !important; }
             
             .status-text { font-size: 14px !important; padding: 5px 10px !important; top: 10px !important; right: 10px !important; }
             #active-color-box { font-size: 12px !important; padding: 5px 10px !important; top: 45px !important; right: 10px !important; }
@@ -116,14 +127,15 @@
             .user-avatar { width: 30px !important; height: 30px !important; margin-right: 5px !important; }
             .user-avatar svg { width: 20px !important; height: 20px !important; }
             
-            .player-area { padding-top: 40px !important; } 
-            .card { width: 65px !important; height: 100px !important; margin-left: -35px !important; border-width: 2px !important; }
+            /* Mobil Kart Görünümü Toparlandı */
+            .player-area { padding-top: 30px !important; } 
+            .card { width: 60px !important; height: 90px !important; margin-left: -25px !important; border-width: 2px !important; }
             .card:first-child { margin-left: 0 !important; }
-            .card:hover { transform: translateY(-20px) scale(1.15) !important; margin-left: -15px !important; margin-right: 20px !important; }
+            .card:hover { transform: translateY(-15px) scale(1.1) !important; margin-left: -10px !important; margin-right: 15px !important; }
             
-            .card-back { width: 65px !important; height: 100px !important; font-size: 16px !important; border-width: 2px !important; }
-            .card-value-center { font-size: 28px !important; }
-            .card-value-small { font-size: 11px !important; }
+            .card-back { width: 60px !important; height: 90px !important; font-size: 16px !important; border-width: 2px !important; }
+            .card-value-center { font-size: 24px !important; }
+            .card-value-small { font-size: 10px !important; }
             
             .center-area { gap: 15px !important; }
             #custom-alert-title, #confirm-text { font-size: 20px !important; }
@@ -142,7 +154,7 @@
 
     <!-- ÖZEL MODALLAR -->
     <div class="modal-overlay" id="custom-alert-modal" style="z-index: 20000;">
-        <div class="support-box" style="border-color: #ff5555; width: 450px;">
+        <div class="support-box" style="border-color: #ff5555;">
             <h2 id="custom-alert-title" style="color: #ff5555; font-size: 32px; margin-bottom: 15px;">Uyarı</h2>
             <p id="custom-alert-text" style="font-size: 20px; color: white; margin-bottom: 30px;">Mesaj</p>
             <button class="menu-btn" style="width: auto; padding: 10px 40px; margin: 0; background: rgba(139,0,0,0.8);" onclick="closeCustomAlert()">Tamam</button>
@@ -150,7 +162,7 @@
     </div>
 
     <div class="modal-overlay" id="confirm-modal" style="z-index: 20000;">
-        <div class="support-box" style="border-color: #ffaa00; width: 450px;">
+        <div class="support-box" style="border-color: #ffaa00;">
             <h2 style="color: #ffaa00; font-size: 32px; margin-bottom: 15px;">Çıkış</h2>
             <p id="confirm-text" style="font-size: 20px; color: white; margin-bottom: 30px;">Odayı kapatıp çıkmak ister misiniz?</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
@@ -180,7 +192,7 @@
     </div>
 
     <div class="modal-overlay" id="color-picker-modal" style="z-index: 21000;">
-        <div class="support-box" style="width: 350px;">
+        <div class="support-box" style="width: 90vw; max-width: 350px;">
             <h2 style="color: white; font-size: 28px; margin-bottom: 20px;">Rengi Belirle</h2>
             <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
                 <button class="menu-btn" style="width: 45%; background: #e74c3c; border-color: white; margin: 0; padding: 15px 5px;" onclick="selectWildColor('red')">Kırmızı</button>
@@ -194,8 +206,8 @@
     <div class="modal-overlay" id="ingame-settings-modal" style="z-index: 20500;">
         <div class="support-box">
             <h2 style="color: white; font-size: 30px; margin-bottom: 20px;">Oyun Arka Planı</h2>
-            <button class="menu-btn" style="width: 100%; margin-bottom: 10px;" onclick="setGameBackground('normal')">Karanlık Mod (Normal)</button>
-            <button class="menu-btn" style="width: 100%; margin-bottom: 20px;" onclick="setGameBackground('blur')">Manzara (Buzlu Cam)</button>
+            <button class="menu-btn" style="width: 100%; margin-bottom: 10px;" onclick="setGameBackground('normal')">Karanlık Mod</button>
+            <button class="menu-btn" style="width: 100%; margin-bottom: 20px;" onclick="setGameBackground('blur')">Manzara</button>
             <button class="menu-btn" style="width: auto; padding: 10px 40px; background: rgba(139,0,0,0.8);" onclick="closeInGameSettings()">Kapat</button>
         </div>
     </div>
@@ -225,24 +237,40 @@
         <div class="large-panel">
             <h1 class="title" style="font-size: 40px; margin-bottom: 10px;">Açık Odalar</h1>
             <div style="display: flex; justify-content: space-between;">
-                <button class="menu-btn" style="width: 48%; background: rgba(139,0,0,0.4); margin:0;" onclick="showScreen('main-menu')">Geri Dön</button>
-                <button class="menu-btn" style="width: 48%; margin:0;" onclick="goToCreateRoom()">Oda Kur</button>
+                <button class="menu-btn" style="width: 48%; background: rgba(139,0,0,0.4); margin:0; padding:10px;" onclick="showScreen('main-menu')">Geri Dön</button>
+                <button class="menu-btn" style="width: 48%; margin:0; padding:10px;" onclick="goToCreateRoom()">Oda Kur</button>
             </div>
             <div class="room-list-container" id="room-list-ui"><p style="color: #aaa; text-align: center; margin-top: 20px;">Açık oda bulunamadı...</p></div>
         </div>
     </div>
 
+    <!-- YENİ ODA KURMA EKRANI (Daraltılmış ve Sembollü) -->
     <div id="create-room-screen" class="screen">
         <div class="panel-box">
-            <h1 class="title" style="font-size: 40px; margin-bottom: 20px;">Oda Ayarları</h1>
-            <div class="setting-group"><label>Oda Adı:</label><input type="text" id="room-name-input" placeholder="Odanın adını girin..."></div>
-            <label style="color:#ddd; font-size:18px;">Oda Gizliliği:</label>
-            <div class="lock-group">
-                <div class="lock-btn active" id="btn-unlock" onclick="setLock(false)">🔓 Açık</div>
-                <div class="lock-btn" id="btn-lock" onclick="setLock(true)">🔒 Kilitli</div>
+            <h1 class="title" style="font-size: 40px; margin-bottom: 20px;">Oda Kur</h1>
+            <input type="text" id="room-name-input" class="global-input" placeholder="Odanın Adı..." style="margin-bottom: 20px;">
+            
+            <div style="display: flex; justify-content: space-around; margin-bottom: 15px;">
+                <!-- Kişi Sayısı Seçimi -->
+                <div style="text-align: center;">
+                    <label style="color:#ddd; font-size:16px; display:block; margin-bottom:5px;">Kişi Sayısı</label>
+                    <div class="lock-group">
+                        <div class="lock-btn active" id="btn-2p" onclick="setPlayerCount(2)">2</div>
+                        <div class="lock-btn" id="btn-4p" onclick="setPlayerCount(4)">4</div>
+                    </div>
+                </div>
+                <!-- Gizlilik (Kilit) Seçimi -->
+                <div style="text-align: center;">
+                    <label style="color:#ddd; font-size:16px; display:block; margin-bottom:5px;">Gizlilik</label>
+                    <div class="lock-group">
+                        <div class="lock-btn active" id="btn-unlock" onclick="setLock(false)">🔓</div>
+                        <div class="lock-btn" id="btn-lock" onclick="setLock(true)">🔒</div>
+                    </div>
+                </div>
             </div>
-            <input type="text" id="room-password" placeholder="Oda şifresini belirleyin...">
-            <button class="menu-btn" style="width: 100%; margin: 10px 0 10px 0;" onclick="createRoom()">Oluştur</button>
+
+            <input type="text" id="room-password" class="global-input" placeholder="Oda şifresi..." style="display: none; margin-bottom: 20px;">
+            <button class="menu-btn" style="width: 100%; margin: 10px 0;" onclick="createRoom()">Oluştur</button>
             <button class="menu-btn" style="width: 100%; margin: 0; background: rgba(139,0,0,0.4);" onclick="showScreen('lobby-screen')">İptal</button>
         </div>
     </div>
@@ -251,7 +279,7 @@
         <div class="panel-box" style="width: 100%; max-width: 600px; position: relative;">
             <button class="circle-back-btn" style="top: -20px; left: -20px;" onclick="leaveWaitingRoom()">❮</button>
             <h1 class="title" id="waiting-room-title" style="font-size: 40px;">Oda Adı</h1>
-            <h3 style="font-size: 24px; color: #aaa; margin-bottom: 20px;">Oyuncular (<span id="waiting-player-count">1</span>/4)</h3>
+            <h3 style="font-size: 24px; color: #aaa; margin-bottom: 20px;">Oyuncular (<span id="waiting-player-count">1</span>/<span id="waiting-max-players">4</span>)</h3>
             <div id="waiting-player-list" style="margin-bottom: 20px;"></div>
             <p id="waiting-status" style="color: #ffeb3b; font-size: 20px; margin-bottom: 20px;">Kurucunun başlatması bekleniyor...</p>
             <button id="start-game-btn" class="menu-btn" style="width: 100%; margin: 0; display: none;" onclick="triggerStartGame()">Oyunu Başlat</button>
@@ -311,17 +339,26 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        // MODAL YUMUŞAK KAPATMA SİSTEMİ (Fade-out eklendi)
         function openModal(id) {
             playClick();
             const modal = document.getElementById(id);
+            const box = modal.querySelector('.support-box');
+            if(box) box.classList.remove('fade-out-element');
             modal.style.display = 'flex';
             modal.classList.add('active-modal');
         }
         function closeModal(id) {
             playClick();
             const modal = document.getElementById(id);
-            modal.classList.remove('active-modal');
-            setTimeout(() => { modal.style.display = 'none'; }, 200);
+            const box = modal.querySelector('.support-box');
+            if(box) box.classList.add('fade-out-element'); // Kapanış animasyonunu başlat
+            
+            setTimeout(() => { 
+                modal.classList.remove('active-modal');
+                modal.style.display = 'none'; 
+                if(box) box.classList.remove('fade-out-element');
+            }, 150); // 0.15s animasyon süresi kadar bekle
         }
 
         function customAlert(msg, title = "Uyarı") { document.getElementById('custom-alert-title').innerText = title; document.getElementById('custom-alert-text').innerText = msg; openModal('custom-alert-modal'); }
@@ -356,25 +393,59 @@
         let currentName = ""; 
         function checkAndSavePlayerName() {
             const nameInput = document.getElementById('global-player-name').value.trim();
-            if(nameInput === "") { customAlert("Oyuna başlamadan veya oda kurmadan önce lütfen bir İsim girin!", "İsim Gerekli"); return false; }
+            if(nameInput === "") { customAlert("Lütfen bir İsim girin!", "İsim Gerekli"); return false; }
             currentName = nameInput; document.getElementById('my-player-name').innerText = currentName; return true;
         }
 
+        // EKRAN GEÇİŞLERİ YUMUŞATILDI (Fade-out eklendi)
         function showScreen(screenId) { 
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); 
-            document.getElementById(screenId).classList.add('active-screen'); 
-            if(screenId !== 'game-screen') document.getElementById('game-screen').classList.remove('bg-blur');
+            const currentActive = document.querySelector('.active-screen');
+            if(currentActive && currentActive.id !== screenId) {
+                // Aktif ekranın içindeki elemanlara kapanış animasyonu ver
+                Array.from(currentActive.children).forEach(c => c.classList.add('fade-out-element'));
+                
+                setTimeout(() => {
+                    Array.from(currentActive.children).forEach(c => c.classList.remove('fade-out-element'));
+                    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); 
+                    document.getElementById(screenId).classList.add('active-screen'); 
+                    if(screenId !== 'game-screen') document.getElementById('game-screen').classList.remove('bg-blur');
+                }, 150);
+            } else {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); 
+                document.getElementById(screenId).classList.add('active-screen'); 
+            }
         }
         
         function openLobby() { if(!checkAndSavePlayerName()) return; if(socket && socket.connected) socket.emit('getRooms'); showScreen('lobby-screen'); }
-        function goToCreateRoom() { if(!checkAndSavePlayerName()) return; document.getElementById('room-name-input').value = currentName + "'in Odası"; showScreen('create-room-screen'); }
+        function goToCreateRoom() { if(!checkAndSavePlayerName()) return; document.getElementById('room-name-input').value = currentName + " Odası"; showScreen('create-room-screen'); }
         
+        // YENİ: KİŞİ SAYISI VE KİLİT SİSTEMİ
+        let roomMaxPlayers = 2; // Varsayılan
         let isRoomLocked = false;
+
+        function setPlayerCount(num) {
+            playClick();
+            roomMaxPlayers = num;
+            document.getElementById('btn-2p').classList.remove('active');
+            document.getElementById('btn-4p').classList.remove('active');
+            document.getElementById(`btn-${num}p`).classList.add('active');
+        }
+
         function setLock(state) {
-            isRoomLocked = state; document.getElementById('btn-unlock').classList.remove('active'); document.getElementById('btn-lock').classList.remove('active');
+            playClick();
+            isRoomLocked = state; 
+            document.getElementById('btn-unlock').classList.remove('active'); 
+            document.getElementById('btn-lock').classList.remove('active');
+            
             const passInput = document.getElementById('room-password');
-            if(state) { document.getElementById('btn-lock').classList.add('active'); passInput.style.display = 'block'; } 
-            else { document.getElementById('btn-unlock').classList.add('active'); passInput.style.display = 'none'; passInput.value = ''; }
+            if(state) { 
+                document.getElementById('btn-lock').classList.add('active'); 
+                passInput.style.display = 'block'; 
+            } else { 
+                document.getElementById('btn-unlock').classList.add('active'); 
+                passInput.style.display = 'none'; 
+                passInput.value = ''; 
+            }
         }
         function changeTemp(value) { document.documentElement.style.setProperty('--color-temp', value / 100); }
 
@@ -442,7 +513,10 @@
             const roomName = document.getElementById('room-name-input').value.trim(); const roomPass = document.getElementById('room-password').value.trim();
             if(roomName === "") { customAlert("Lütfen bir oda adı giriniz!"); return; }
             if(isRoomLocked && roomPass === "") { customAlert("Kilitli odalar için şifre belirlemelisiniz!"); return; }
-            if(socket && socket.connected) { socket.emit('createRoom', { name: roomName, maxPlayers: 4, isLocked: isRoomLocked, password: roomPass, hostName: currentName }); } else { customAlert("Sunucuya bağlanılamadı!", "Hata"); }
+            if(socket && socket.connected) { 
+                // Yeni Değişken Eklendi: maxPlayers
+                socket.emit('createRoom', { name: roomName, maxPlayers: roomMaxPlayers, isLocked: isRoomLocked, password: roomPass, hostName: currentName }); 
+            } else { customAlert("Sunucuya bağlanılamadı!", "Hata"); }
         }
 
         function triggerStartGame() { 
@@ -467,7 +541,9 @@
         function kickPlayer(playerId) { if(amIHost) socket.emit('kickPlayer', { roomId: myRoomId, playerId: playerId }); }
 
         function updateWaitingRoomUI(room) {
-            document.getElementById('waiting-room-title').innerText = room.name; document.getElementById('waiting-player-count').innerText = room.players.length;
+            document.getElementById('waiting-room-title').innerText = room.name; 
+            document.getElementById('waiting-player-count').innerText = room.players.length;
+            document.getElementById('waiting-max-players').innerText = room.maxPlayers; // Maksimum oyuncuyu ekrana yazdır
             const listUI = document.getElementById('waiting-player-list'); listUI.innerHTML = "";
             room.players.forEach(p => {
                 let kickHtml = ""; if(amIHost && p.id !== socket.id) { kickHtml = `<button class="kick-btn" onclick="kickPlayer('${p.id}')">✖</button>`; }
@@ -534,8 +610,6 @@
 
         function updateBoard() {
             const discardUI = document.getElementById('discard-pile'); discardUI.innerHTML = "";
-            
-            // Sadece en üstteki 3 kartı çizerek alttakileri tamamen gizler ve taşmayı önler
             const cardsToRender = discardPile.slice(-3);
             cardsToRender.forEach(c => { discardUI.innerHTML += createCardHTML(c, true); });
             
