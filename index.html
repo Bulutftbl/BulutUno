@@ -58,7 +58,6 @@
         .kick-btn:hover { transform: scale(1.3); color: #ff0000; }
         .waiting-player-item:hover .kick-btn { display: block; }
         
-        /* ODA KURMA - KİŞİ VE GİZLİLİK BUTONLARI (PC İÇİN BÜYÜTÜLDÜ) */
         .room-settings-row { display: flex; justify-content: space-around; margin-bottom: 15px; width: 100%; align-items: flex-start; }
         .lock-group { display: flex; gap: 15px; justify-content: center; margin: 8px 0; }
         .lock-btn { background: rgba(40,40,40,0.8); border: 2px solid #555; font-size: 26px; padding: 12px; width: 65px; border-radius: 12px; transition: 0.3s; text-align: center; }
@@ -114,7 +113,6 @@
             .large-panel { width: 95vw !important; height: 92vh !important; padding: 15px !important; }
             .panel-box, .support-box { width: 95vw !important; padding: 20px !important; }
             
-            /* MOBİL ODA KURMA DÜZENİ */
             .room-settings-row { flex-direction: row; justify-content: space-between; gap: 5px; }
             .lock-group { gap: 10px !important; margin: 5px 0 !important; }
             .lock-btn { font-size: 22px !important; padding: 10px !important; width: 55px !important; }
@@ -227,6 +225,20 @@
         </div>
     </div>
 
+    <!-- YENİ: ÇEKİLEN UYUMLU KARTI ANINDA OYNAMA MODALI -->
+    <div class="modal-overlay" id="draw-play-modal" style="z-index: 22000; background: rgba(0,0,0,0.92);">
+        <div class="support-box" style="width: 90vw; max-width: 450px; background: transparent; border: none; box-shadow: none;">
+            <h2 style="color: white; font-size: 32px; margin-bottom: 10px; text-shadow: 2px 2px 5px black;">Uyumlu Kart Çektin!</h2>
+            <div id="draw-play-card-container" style="display: flex; justify-content: center; transform: scale(1.3); margin: 50px 0;">
+                <!-- Kart Buraya Gelecek -->
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button class="menu-btn" style="width: 50%; background: rgba(50,50,50,0.9); margin:0; border-color: #777;" onclick="keepDrawnCard()">Kalsın</button>
+                <button class="menu-btn" style="width: 50%; background: rgba(220, 20, 60, 1); margin:0; border-color: white;" onclick="playDrawnCard()">Hemen At</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ANA MENÜ -->
     <div id="main-menu" class="screen active-screen">
         <div style="display: flex; flex-direction: column; align-items: center;">
@@ -249,14 +261,12 @@
         </div>
     </div>
 
-    <!-- ODA KURMA EKRANI -->
     <div id="create-room-screen" class="screen">
         <div class="panel-box">
             <h1 class="title" style="font-size: 40px; margin-bottom: 20px;">Oda Kur</h1>
             <input type="text" id="room-name-input" class="global-input" placeholder="Odanın Adı..." style="margin-bottom: 20px;">
             
             <div class="room-settings-row">
-                <!-- Kişi Sayısı Seçimi -->
                 <div style="text-align: center; flex: 1;">
                     <label style="color:#ddd; font-size:16px; display:block; margin-bottom:5px;">Kişi Sayısı</label>
                     <div class="lock-group">
@@ -264,7 +274,6 @@
                         <div class="lock-btn" id="btn-4p" onclick="setPlayerCount(4)">4</div>
                     </div>
                 </div>
-                <!-- Gizlilik (Kilit) Seçimi -->
                 <div style="text-align: center; flex: 1;">
                     <label style="color:#ddd; font-size:16px; display:block; margin-bottom:5px;">Gizlilik</label>
                     <div class="lock-group">
@@ -457,6 +466,9 @@
         let botDifficulty = 'orta'; 
         let hasSaidUno = false;
         let botHasSaidUno = false;
+        
+        // YENİ: Çekilip de Ekranda Bekleyen Kart Değişkeni
+        let pendingDrawnCards = [];
 
         function openBotDifficulty() { openModal('bot-difficulty-modal'); }
         function closeBotDifficulty() { closeModal('bot-difficulty-modal'); }
@@ -498,11 +510,35 @@
                 discardPile.push(data.card); document.getElementById('bot-card-count').innerText = data.remaining;
                 let cardVal = data.card.value;
                 if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else if(data.card.color !== 'wild') { penaltyCount = 0; }
-                if (cardVal === 'S' || cardVal === 'R') { setTurn(false); document.getElementById('game-status').innerText = "Rakip tekrar oynuyor..."; } else { setTurn(true); }
                 updateBoard();
+
+                // HATA 1 ÇÖZÜMÜ: EĞER RAKİP KAZANDIYSA OYUNU HEMEN BİTİR VE LOBİYE DÖN
+                if (data.remaining === 0) {
+                    setTimeout(() => {
+                        customAlert(document.getElementById('opponent-name').innerText + " KAZANDI! 😢", "Oyun Bitti");
+                        leaveGame();
+                    }, 500);
+                    return;
+                }
+
+                if (cardVal === 'S' || cardVal === 'R') { setTurn(false); document.getElementById('game-status').innerText = "Rakip tekrar oynuyor..."; } else { setTurn(true); }
             });
 
-            socket.on('cardsDrawn', (cards) => { playerHand.push(...cards); penaltyCount = 0; hasSaidUno = false; setTurn(false); updateBoard(); });
+            // YENİ: ÇEKİLEN KART UYUMLUYSA EKRANDA GÖSTER (MULTIPLAYER)
+            socket.on('cardsDrawn', (cards) => { 
+                if (cards.length === 1 && penaltyCount === 0 && canPlay(cards[0])) {
+                    pendingDrawnCards = cards;
+                    document.getElementById('draw-play-card-container').innerHTML = createCardHTML(cards[0]);
+                    openModal('draw-play-modal');
+                } else {
+                    playerHand.push(...cards); 
+                    penaltyCount = 0; 
+                    hasSaidUno = false; 
+                    setTurn(false); 
+                    updateBoard(); 
+                }
+            });
+
             socket.on('opponentDrawn', (amount) => { const countEl = document.getElementById('bot-card-count'); countEl.innerText = parseInt(countEl.innerText) + amount; penaltyCount = 0; setTurn(true); updateBoard(); });
             socket.on('roomClosed', () => { customAlert("Kurucu odayı kapattı!", "Oda Kapandı"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
             socket.on('kicked', () => { customAlert("Kurucu seni odadan attı!", "Atıldın"); myRoomId = null; amIHost = false; showScreen('lobby-screen'); });
@@ -633,10 +669,14 @@
             document.getElementById('bot-card-count').innerText = botCount;
         }
 
+        // HATA 3 ÇÖZÜMÜ: CEZA KATLAMA MANTIĞI
         function canPlay(card) {
             const top = discardPile[discardPile.length - 1];
             let activeColor = top.chosenColor ? top.chosenColor : top.color;
-            if (penaltyCount > 0) { return card.value === top.value && card.value.includes('+'); }
+            if (penaltyCount > 0) { 
+                // EĞER CEZA VARSA, SADECE +2 VEYA +4 OLAN HER KART ATILABİLİR (KATLAMA)
+                return card.value.includes('+'); 
+            }
             return card.color === 'wild' || card.color === activeColor || card.value === top.value;
         }
 
@@ -645,8 +685,9 @@
             playClick();
             const card = playerHand[index];
             
-            if (penaltyCount > 0 && !(card.value === discardPile[discardPile.length-1].value && card.value.includes('+'))) {
-                customAlert(`Cezalı durumdasın! Sadece ${discardPile[discardPile.length-1].value} atarak cezayı katlayabilirsin veya kart ÇEK'melisin.`, "Geçersiz Hamle");
+            // HATA 3 UYARI GÜNCELLEMESİ: ARTIK HERHANGİ BİR + ATARAK CEZA KATLANABİLİR
+            if (penaltyCount > 0 && !card.value.includes('+')) {
+                customAlert(`Cezalı durumdasın! Sadece +2 veya +4 atarak cezayı katlayabilirsin veya kart ÇEK'melisin.`, "Geçersiz Hamle");
                 return;
             }
 
@@ -688,7 +729,10 @@
             
             updateBoard();
             
-            if (!isPenalty && playerHand.length === 0) { customAlert("KAZANDIN! 🎉", "Tebrikler"); showScreen('main-menu'); return; }
+            if (!isPenalty && playerHand.length === 0) { 
+                setTimeout(() => { customAlert("KAZANDIN! 🎉", "Tebrikler"); leaveGame(); }, 500); 
+                return; 
+            }
 
             if (isMultiplayer) {
                 socket.emit('playCardMultiplayer', { roomId: myRoomId, card: card, remaining: playerHand.length });
@@ -704,16 +748,49 @@
             }
         }
 
+        // YENİ: ÇEKİLEN KART UYUMLUYSA EKRANDA GÖSTER (BOT MODU İÇİN)
         function drawCard() {
             if (!isPlayerTurn) return;
             playClick();
             let drawAmount = penaltyCount > 0 ? penaltyCount : 1;
             
-            if (isMultiplayer) { socket.emit('drawCards', { roomId: myRoomId, amount: drawAmount }); } 
+            if (isMultiplayer) { 
+                socket.emit('drawCards', { roomId: myRoomId, amount: drawAmount }); 
+            } 
             else {
-                for(let i=0; i<drawAmount; i++) { checkAndReshuffleDeck(); playerHand.push(drawDeck.pop()); }
+                if (drawAmount === 1) {
+                    checkAndReshuffleDeck(); 
+                    let drawn = drawDeck.pop();
+                    if (canPlay(drawn)) {
+                        pendingDrawnCards = [drawn];
+                        document.getElementById('draw-play-card-container').innerHTML = createCardHTML(drawn);
+                        openModal('draw-play-modal');
+                        return; // Tur bitmesin, seçimi beklesin!
+                    } else {
+                        playerHand.push(drawn);
+                    }
+                } else {
+                    for(let i=0; i<drawAmount; i++) { checkAndReshuffleDeck(); playerHand.push(drawDeck.pop()); }
+                }
                 penaltyCount = 0; hasSaidUno = false; setTurn(false); updateBoard(); setTimeout(botTurn, 1200);
             }
+        }
+
+        // YENİ: ÇEKİLEN KARTI ELİNDE TUTMA VEYA ANINDA ATMA FONKSİYONLARI
+        function keepDrawnCard() {
+            closeModal('draw-play-modal');
+            playerHand.push(...pendingDrawnCards);
+            penaltyCount = 0; hasSaidUno = false; 
+            setTurn(false); updateBoard();
+            if (!isMultiplayer) setTimeout(botTurn, 1200);
+        }
+        
+        function playDrawnCard() {
+            closeModal('draw-play-modal');
+            playerHand.push(...pendingDrawnCards);
+            let idx = playerHand.length - 1;
+            isPlayerTurn = true; // Modal açıkken tur bizde kalsın diye garantiliyoruz
+            playCard(idx);
         }
 
         function botTurn() {
@@ -757,7 +834,7 @@
                         for(let i=0; i<4; i++) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); }
                         updateBoard(); setTimeout(botTurn, 1200); return;
                     }
-                    customAlert("ROBOT KAZANDI! 😢", "Oyun Bitti"); showScreen('main-menu'); return; 
+                    customAlert("ROBOT KAZANDI! 😢", "Oyun Bitti"); leaveGame(); return; 
                 }
                 
                 let cardVal = cardToPlay.value;
@@ -767,8 +844,38 @@
                 else { setTurn(true); updateBoard(); }
             } else {
                 let drawAmount = penaltyCount > 0 ? penaltyCount : 1;
-                for(let i=0; i<drawAmount; i++) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); }
-                penaltyCount = 0; botHasSaidUno = false; setTurn(true); updateBoard();
+                let playedDrawn = false;
+                
+                // YENİ: ROBOT DA EĞER ÇEKTİĞİ KARTI ATABİLİYORSA ANINDA ATAR
+                if (drawAmount === 1) {
+                    checkAndReshuffleDeck(); 
+                    let drawn = drawDeck.pop();
+                    botHand.push(drawn);
+                    if (canPlay(drawn)) {
+                        playedDrawn = true;
+                        setTimeout(() => {
+                            let cardToPlay = botHand.pop();
+                            cardToPlay.angle = Math.floor(Math.random() * 10) - 5; 
+                            if(cardToPlay.color === 'wild') cardToPlay.chosenColor = ['red', 'blue', 'green', 'yellow'][Math.floor(Math.random() * 4)];
+                            discardPile.push(cardToPlay);
+                            
+                            if (botHand.length === 0) { customAlert("ROBOT KAZANDI! 😢", "Oyun Bitti"); leaveGame(); return; }
+                            
+                            let cardVal = cardToPlay.value;
+                            if (cardVal.includes('+')) { penaltyCount += parseInt(cardVal.replace('+', '')); } else if(cardToPlay.color !== 'wild') { penaltyCount = 0; }
+                            
+                            if(cardVal === 'S' || cardVal === 'R') { document.getElementById('game-status').innerText = "Robot tekrar oynuyor..."; updateBoard(); setTimeout(botTurn, 1200); return; } 
+                            else { setTurn(true); updateBoard(); }
+                        }, 800);
+                    }
+                } else {
+                    for(let i=0; i<drawAmount; i++) { checkAndReshuffleDeck(); botHand.push(drawDeck.pop()); }
+                }
+                
+                penaltyCount = 0; botHasSaidUno = false; 
+                if (!playedDrawn) {
+                    setTurn(true); updateBoard();
+                }
             }
         }
     </script>
